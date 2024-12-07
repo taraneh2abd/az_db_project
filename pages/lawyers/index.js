@@ -14,7 +14,7 @@ function LawyersPage(props) {
         <title>Lawyers List</title>
         <meta
           name="description"
-          content="Adaalat: One step Solution to managing court hearings"
+          content=": One step Solution to managing court hearings"
         />
       </Head>
       <div className="max-w-6xl mx-auto px-4">

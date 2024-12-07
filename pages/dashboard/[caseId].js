@@ -35,7 +35,7 @@ function CaseDetailsPage(props) {
         <title>Case No : {parsedData.uid}</title>
         <meta
           name="description"
-          content="Adaalat: One step Solution to managing court hearings"
+          content=": One step Solution to managing court hearings"
         />
       </Head>
       <DisplayCaseDetails

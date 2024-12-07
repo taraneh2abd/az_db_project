@@ -13,7 +13,7 @@ function AddCases(props) {
         <title>Register Case</title>
         <meta
           name="description"
-          content="Adaalat: One step Solution to managing court hearings"
+          content=": One step Solution to managing court hearings"
         />
       </Head>
       <AddCase names={parsedData} />

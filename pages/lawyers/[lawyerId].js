@@ -18,7 +18,7 @@ function LawyerProfile(props) {
         <title>Profile: {lawyerName}</title>
         <meta
           name="description"
-          content="Adaalat: One step Solution to managing court hearings"
+          content=": One step Solution to managing court hearings"
         />
       </Head>
       <LawyerDetails lawyer={parsedProfile} />

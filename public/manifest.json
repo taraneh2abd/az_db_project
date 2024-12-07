@@ -4,8 +4,8 @@
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "name": "Adaalat - A court management system",
-  "short_name": "Adaalat",
+  "name": " - A court management system",
+  "short_name": "",
   "description": "A court management system to add, register case, withdraw theme seamlessly.",
   "icons": [
     {

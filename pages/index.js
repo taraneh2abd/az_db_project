@@ -5,14 +5,14 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Adaalat</title>
+        <title></title>
         <meta
           name="description"
-          content="Adaalat: One step Solution to managing court hearings"
+          content=": One step Solution to managing court hearings"
         />
 
         {/* Meta tags og */}
-        <meta property="og:title" content="Adaalat" />
+        <meta property="og:title" content="" />
         <meta
           property="og:description"
           content="A court management system to add, register case, withdraw case seamlessly."
@@ -21,11 +21,11 @@ export default function Home() {
           property="og:image"
           content="https://res.cloudinary.com/dapafwlvo/image/upload/v1635735765/image1_kafi3l.png"
         />
-        <meta property="og:url" content="https://adaalat.vercel.app" />
+        <meta property="og:url" content="https://.vercel.app" />
         <meta name="twitter:card" content="summary_large_image" />
 
         {/* Twitter */}
-        <meta name="twitter:title" content="Adaalat" />
+        <meta name="twitter:title" content="" />
         <meta
           name="twitter:description"
           content="A court management system to add, register case, withdraw case seamlessly."

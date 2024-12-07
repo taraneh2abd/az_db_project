@@ -25,7 +25,7 @@ function MeetTheDevelopersPage() {
         <meta property="og:title" content="Meet the developers!" />
         <meta
           property="og:description"
-          content="The minds behind Adaalat- A court management system to register court hearings."
+          content="The minds behind - A court management system to register court hearings."
         />
         <meta
           property="og:image"
@@ -33,7 +33,7 @@ function MeetTheDevelopersPage() {
         />
         <meta
           property="og:url"
-          content="https://adaalat.vercel.app/developers"
+          content="https://.vercel.app/developers"
         />
         <meta name="twitter:card" content="summary_large_image" />
 
@@ -41,7 +41,7 @@ function MeetTheDevelopersPage() {
         <meta name="twitter:title" content="Meet the developers!" />
         <meta
           name="twitter:description"
-          content="The minds behind Adaalat- A court management system to register court hearings."
+          content="The minds behind - A court management system to register court hearings."
         />
         <meta
           name="twitter:image"

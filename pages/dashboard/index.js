@@ -16,7 +16,7 @@ function Dashboard(props) {
         <title>Dashboard: {props.session.user.email}</title>
         <meta
           name="description"
-          content="Adaalat: One step Solution to managing court hearings"
+          content=": One step Solution to managing court hearings"
         />
       </Head>
       <div className="flex items-center justify-center mt-20 text-3xl">
