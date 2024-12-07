@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const ButtonWithInput = ({ buttonText, placeholder }) => {
+const ButtonWithInput = ({ buttonText, placeholders }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -26,12 +26,17 @@ const ButtonWithInput = ({ buttonText, placeholder }) => {
       </button>
       
       {isOpen && (
-        <div className="mt-4 w-[20 * 1000px] bg-gray-100 p-4 rounded-2xl">
-          <input
-            type="text"
-            placeholder={placeholder}
-            className="w-full px-4 py-2 border rounded-lg text-gray-600"
-          />
+        <div className="mt-4 w-[1000px] bg-gray-100 p-4 rounded-2xl">
+          <div className="space-y-2">
+            {placeholders.map((placeholder, index) => (
+              <input
+                key={index}
+                type="text"
+                placeholder={placeholder}
+                className="w-full px-4 py-2 border rounded-lg text-gray-600"
+              />
+            ))}
+          </div>
         </div>
       )}
     </div>
@@ -42,12 +47,24 @@ const App = () => {
   return (
     <div className="space-y-6">
       <ButtonWithInput 
-        buttonText="Get the Juridical History of a Person (case-id list)"
-        placeholder="first-name last-name"
+        buttonText="Show all Evidence of all Case wich these 4 person where involved" 
+        placeholders={["person-id (defendant)", "Person-id (plaintiff)", "Lawyer-id", "Judge-id"]}
       />
       <ButtonWithInput 
-        buttonText="Get the Details of a Case"
-        placeholder="case-id"
+        buttonText="Show All Sessions of a Court Branch between 2 Date" 
+        placeholders={["Court-branch-id", "Start-Date","End-Date"]}
+      />
+      <ButtonWithInput 
+        buttonText="Show Juridical History of a Person (all case-id)" 
+        placeholders={["Person-id", "Case type"]}
+      />
+      <ButtonWithInput 
+        buttonText="Show all cases of this Trio wich always has Won" 
+        placeholders={["Person-id", "Lawyer-id","Judge-id"]}
+      />
+      <ButtonWithInput 
+        buttonText="Show All Apeals of a Court Branch between 2 Date" 
+        placeholders={["Court-branch-id", "Start-Date","End-Date"]}
       />
     </div>
   );
