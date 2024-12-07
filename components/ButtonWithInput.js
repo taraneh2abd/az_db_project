@@ -24,7 +24,7 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
           <polyline points="12 5 19 12 12 19"></polyline>
         </svg>
       </button>
-      
+
       {isOpen && (
         <div className="mt-4 w-[1000px] bg-gray-100 p-4 rounded-2xl">
           <div className="space-y-2">
@@ -37,6 +37,12 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
               />
             ))}
           </div>
+<div className="flex justify-center mt-4">
+  <button className="w-[200px] px-6 py-2 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl">
+    Apply
+  </button>
+</div>
+
         </div>
       )}
     </div>
