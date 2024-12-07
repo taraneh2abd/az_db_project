@@ -1,4 +1,3 @@
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 
 A court case management software that has facility to record information like adding a case,
 adding lawyers (have facility select from existing list of lawyers), add invoice for
