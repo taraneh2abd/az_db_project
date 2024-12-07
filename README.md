@@ -1,9 +1,7 @@
-
-A court case management software that has facility to record information like adding a case,
-adding lawyers (have facility select from existing list of lawyers), add invoice for
-for each hearing and for different heads under which lawyers charge the clients.
-In short the system should provide end to end management of court cases from a
-client perspective and should be easy to use.
+A court case management software that has facility to extract these queries:
+- get all juridical history (cases) of a person
+- get all details of a case
+- get all details of sessions of a court branch
 
 ---
 
