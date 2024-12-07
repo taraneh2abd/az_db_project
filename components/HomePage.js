@@ -1,9 +1,12 @@
 import { Fragment } from 'react';
-
+import ButtonWithInput from '../components/ButtonWithInput';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 
 function HomePage() {
+  const [showInput1, setShowInput1] = useState(false);
+  const [showInput2, setShowInput2] = useState(false);
   return (
     <Fragment>
       <section className="px-2 py-20 bg-white md:px-0">
@@ -141,45 +144,20 @@ function HomePage() {
         </p>
         
 
-    <div className="flex flex-col items-center justify-center space-y-4">
-  <Link href="/auth">
-    <a className="flex items-center w-[1000px] px-6 py-3 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl">
-      Get the Juridical History of a Person (case-id list)
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-5 h-5 ml-1"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-        <polyline points="12 5 19 12 12 19"></polyline>
-      </svg>
-    </a>
-  </Link>
-          <Link href="/developers">
-                <a className="flex items-center w-[1000px] px-6 py-3 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl">
-      Get the Details of a Case
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-5 h-5 ml-1"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-        <polyline points="12 5 19 12 12 19"></polyline>
-      </svg>
-    </a>
-  </Link>
-</div>
-
+<div className="flex flex-col items-center justify-center space-y-4">
+      <ButtonWithInput 
+        onClick={() => setShowInput1(!showInput1)}
+      />
+      {showInput1 && (
+        <div className="w-[2000px] mt-4 p-4 bg-gray-100 rounded-2xl">
+          <input
+            type="text"
+            placeholder="first-name last-name"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+      )}
+    </div>
 
       </section> 
 
