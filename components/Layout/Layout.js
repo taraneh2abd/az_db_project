@@ -66,14 +66,14 @@ function Layout(props) {
               </div>
             )}
             {!session && (
+              )} */}
               <div className="hidden md:flex items-center space-x-1">
-                <Link href="/auth">
-                  <a className="py-2 px-3 bg-blue-700 hover:bg-blue-500 text-white hover:text-black rounded transition duration-300">
-                    SignUp
+                <Link href="https://github.com/taraneh2abd/az_db_project?tab=readme-ov-file">
+                  <a className="py-2 px-3 bg-indigo-700 hover:bg-blue-500 text-white hover:text-black rounded transition duration-300">
+                    fatemeh abdellai / iman ghader
                   </a>
                 </Link>
               </div>
-            )} */}
 
             {/* mobile button goes here  */}
             <div className="md:hidden flex items-center">
