@@ -41,18 +41,6 @@ Install dependencies
   npm install
 ```
 
-Add Environment Variables
-
-```env
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-NEXTAUTH_URL=http://localhost:3000
-MONGODB_USERNAME=
-MONGODB_PASSWORD=
-MONGODB_CLUSTER=
-MONGODB_DATABASE=
-```
-
 Start the server
 
 ```bash
