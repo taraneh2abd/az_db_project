@@ -146,17 +146,7 @@ function HomePage() {
 
 <div className="flex flex-col items-center justify-center space-y-4">
       <ButtonWithInput 
-        onClick={() => setShowInput1(!showInput1)}
       />
-      {showInput1 && (
-        <div className="w-[2000px] mt-4 p-4 bg-gray-100 rounded-2xl">
-          <input
-            type="text"
-            placeholder="first-name last-name"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-      )}
     </div>
 
       </section> 
