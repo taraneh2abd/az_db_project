@@ -1,0 +1,229 @@
+CREATE TABLE Involved_Party (
+    party_id INT PRIMARY KEY,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    address TEXT,
+    phone_number VARCHAR(20),
+    is_juridical BOOLEAN
+);
+
+CREATE TABLE Representation (
+    representation_id INT PRIMARY KEY,
+    client_id INT,
+    lawyer_id INT,
+    case_id INT,
+    start_date DATE,
+    end_date DATE,
+    FOREIGN KEY (case_id) REFERENCES "Case"(case_id),
+    FOREIGN KEY (client_id) REFERENCES Involved_Party(party_id),
+    FOREIGN KEY (lawyer_id) REFERENCES Involved_Party(party_id)
+);
+
+CREATE TABLE Complaint (
+    complaint_id INT PRIMARY KEY,
+    case_id INT,
+    complaint_date DATE,
+    plaintiff_id INT,
+    defendant_id INT,
+    description TEXT,
+    FOREIGN KEY (case_id) REFERENCES "Case"(case_id),
+    FOREIGN KEY (plaintiff_id) REFERENCES Involved_Party(party_id),
+    FOREIGN KEY (defendant_id) REFERENCES Involved_Party(party_id)
+);
+
+CREATE TABLE Court_Staff (
+    court_staff_id INT PRIMARY KEY,
+    court_staff_name VARCHAR(100),
+    address TEXT,
+    court_staff_type VARCHAR(50) CHECK (court_staff_type IN ('Judge', 'Bailiff', 'Jury_member', 'Reporter', 'Clerk', 'Prosecutor', 'Plaintiff-Lawyer', 'Defendant-Lawyer')),
+    license_number VARCHAR(50)
+);
+
+CREATE TABLE Court_Branch (
+    court_id INT PRIMARY KEY,
+    court_name VARCHAR(100),
+    address TEXT,
+    court_type VARCHAR(50) CHECK (court_type IN ('Family', 'Public', 'Military', 'Supreme')),
+    validity TINYINT CHECK (validity BETWEEN 1 AND 5)
+);
+
+CREATE TABLE "Case" (
+    case_id INT PRIMARY KEY,
+    case_type VARCHAR(50) CHECK (case_type IN ('Political', 'Family', 'Criminal', 'Civil')),
+    starting_date DATE,
+    finishing_date DATE,
+    status VARCHAR(50) CHECK (status IN ('Referred', 'Pending', 'Closed', 'Open')),
+    judgment_date DATE,
+    description TEXT
+);
+
+CREATE TABLE Appeal (
+    appeal_id INT PRIMARY KEY,
+    case_id INT,
+    appeal_date DATE,
+    reason TEXT,
+    status VARCHAR(50) CHECK (status IN ('Pending', 'Granted', 'Denied')),
+    decision_date DATE,
+    outcome TEXT,
+    FOREIGN KEY (case_id) REFERENCES "Case"(case_id)
+);
+
+CREATE TABLE Evidence (
+    evidence_id INT PRIMARY KEY,
+    case_id INT,
+    description TEXT,
+    evidence_type VARCHAR(50) CHECK (evidence_type IN ('Other', 'Digital Document', 'Written', 'Testimony')),
+    date_submitted DATE,
+    FOREIGN KEY (case_id) REFERENCES "Case"(case_id)
+);
+
+CREATE TABLE Verdict (
+    verdict_id INT PRIMARY KEY,
+    case_id INT,
+    verdict_type VARCHAR(50) CHECK (verdict_type IN ('Guilty', 'Not Guilty')),
+    date_issued DATE,
+    summary TEXT,
+    FOREIGN KEY (case_id) REFERENCES "Case"(case_id)
+);
+
+CREATE TABLE Archive (
+    archive_id INT PRIMARY KEY,
+    case_id INT,
+    archival_date DATE,
+    FOREIGN KEY (case_id) REFERENCES "Case"(case_id)
+);
+
+CREATE TABLE Session (
+    session_id INT PRIMARY KEY,
+    case_id INT,
+    session_date DATE,
+    court_branch INT,
+    summary TEXT,
+    FOREIGN KEY (case_id) REFERENCES "Case"(case_id),
+    FOREIGN KEY (court_branch) REFERENCES Court_Branch(court_id)
+);
+
+CREATE TABLE Role_Assignment (
+    party_id INT,
+    case_id INT,
+    role VARCHAR(50),
+    FOREIGN KEY (party_id) REFERENCES Involved_Party(party_id),
+    FOREIGN KEY (case_id) REFERENCES "Case"(case_id)
+);
+
+CREATE TABLE Role_In_Session (
+    court_staff_id INT,
+    session_id INT,
+    role VARCHAR(50),
+    FOREIGN KEY (court_staff_id) REFERENCES Court_Staff(court_staff_id),
+    FOREIGN KEY (session_id) REFERENCES Session(session_id)
+);
+
+CREATE TABLE Evidence_Case (
+    evidence_id INT,
+    case_id INT,
+    FOREIGN KEY (evidence_id) REFERENCES Evidence(evidence_id),
+    FOREIGN KEY (case_id) REFERENCES "Case"(case_id)
+);
+
+CREATE TABLE Case_Archive (
+    archive_id INT,
+    case_id INT,
+    FOREIGN KEY (archive_id) REFERENCES Archive(archive_id),
+    FOREIGN KEY (case_id) REFERENCES "Case"(case_id)
+);
+
+CREATE TABLE Referral_Case (
+    referrer_case_id INT,
+    referred_case_id INT,
+    FOREIGN KEY (referrer_case_id) REFERENCES "Case"(case_id),
+    FOREIGN KEY (referred_case_id) REFERENCES "Case"(case_id)
+);
+
+
+
+CREATE TABLE Person_Evidence_Relation (
+    person_id INT,
+    evidence_id INT,
+    address_of_finding TEXT,
+    date_of_finding DATE,
+    role VARCHAR(50),
+    PRIMARY KEY (person_id, evidence_id),
+    FOREIGN KEY (person_id) REFERENCES Involved_Party(party_id),
+    FOREIGN KEY (evidence_id) REFERENCES Evidence(evidence_id)
+);
+
+CREATE TABLE Writes (
+    writer_id INT,
+    appeal_id INT,
+    PRIMARY KEY (writer_id, appeal_id),
+    FOREIGN KEY (writer_id) REFERENCES Involved_Party(party_id),
+    FOREIGN KEY (appeal_id) REFERENCES Appeal(appeal_id)
+);
+
+CREATE TABLE Accuses (
+    party_id INT,
+    complaint_id INT,
+    role VARCHAR(50) CHECK (role IN ('Accuser', 'Accused')) NOT NULL,
+    PRIMARY KEY (party_id, complaint_id, role),
+    FOREIGN KEY (party_id) REFERENCES Involved_Party(party_id),
+    FOREIGN KEY (complaint_id) REFERENCES Complaint(complaint_id)
+);
+
+CREATE TABLE Case_Verdicts (
+    case_id INT,
+    verdict_id INT,
+    PRIMARY KEY (case_id, verdict_id),
+    FOREIGN KEY (case_id) REFERENCES "Case"(case_id),
+    FOREIGN KEY (verdict_id) REFERENCES Verdict(verdict_id)
+);
+
+CREATE TABLE Court_Of_Session (
+    session_id INT,
+    court_id INT,
+    PRIMARY KEY (session_id, court_id),
+    FOREIGN KEY (session_id) REFERENCES Session(session_id),
+    FOREIGN KEY (court_id) REFERENCES Court_Branch(court_id)
+);
+
+CREATE TABLE In_Session (
+    session_id INT,
+    case_id INT,
+    PRIMARY KEY (session_id, case_id),
+    FOREIGN KEY (session_id) REFERENCES Session(session_id),
+    FOREIGN KEY (case_id) REFERENCES "Case"(case_id)
+);
+
+CREATE TABLE Represents_What (
+    representation_id INT,
+    complaint_id INT,
+    role VARCHAR(50) CHECK (role IN ('Plaintiff', 'Defendant')) NOT NULL,
+    PRIMARY KEY (representation_id, complaint_id),
+    FOREIGN KEY (representation_id) REFERENCES Representation(representation_id),
+    FOREIGN KEY (complaint_id) REFERENCES Complaint(complaint_id)
+);
+
+CREATE TABLE Complaint_Of_Case (
+    complaint_id INT,
+    case_id INT,
+    PRIMARY KEY (complaint_id, case_id),
+    FOREIGN KEY (complaint_id) REFERENCES Complaint(complaint_id),
+    FOREIGN KEY (case_id) REFERENCES "Case"(case_id)
+);
+
+CREATE TABLE Appeal_Request (
+    case_id INT,
+    appeal_id INT,
+    request_date DATE,
+    PRIMARY KEY (case_id, appeal_id),
+    FOREIGN KEY (case_id) REFERENCES "Case"(case_id),
+    FOREIGN KEY (appeal_id) REFERENCES Appeal(appeal_id)
+);
+
+CREATE TABLE Representing_Who (
+    representation_id INT,
+    party_id INT,
+    PRIMARY KEY (representation_id, party_id),
+    FOREIGN KEY (representation_id) REFERENCES Representation(representation_id),
+    FOREIGN KEY (party_id) REFERENCES Involved_Party(party_id)
+);

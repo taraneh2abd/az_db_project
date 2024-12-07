@@ -1,9 +1,5 @@
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 
-# Adaalat: A court management system
-
-![app-preview](https://res.cloudinary.com/dapafwlvo/image/upload/v1635735765/image1_kafi3l.png)
-
 A court case management software that has facility to record information like adding a case,
 adding lawyers (have facility select from existing list of lawyers), add invoice for
 for each hearing and for different heads under which lawyers charge the clients.
@@ -13,16 +9,18 @@ client perspective and should be easy to use.
 ---
 
 ## Authors
+- taraneh abdellahi
+- iman ghader
 
-- [@geobrodas](https://www.github.com/GeoBrodas)
-- [@saiffarooqui](https://github.com/saiffarooqui)
-- [@AmishaNaik18](https://github.com/AmishaNaik18)
+## Helper Recourse
+- https://github.com/GeoBrodas/adalat-court-management
+
 
 ## Tech Stack
 
 - NextJS
 - Tailwind
-- MongoDB
+- Mysql
 - NextAuth ( Credential and Google OAuth)
 - React-Hook-Forms
 
@@ -64,14 +62,3 @@ Start the server
   npm run dev
 ```
 
-## Feedback
-
-If you have any feedback, please reach out to us at
-
-- https://georgey.codes
-- geobro2310@gmail.com
-
-## 🔗 Links
-
-[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://georgey.codes/)
-[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/georgeyvb/)
