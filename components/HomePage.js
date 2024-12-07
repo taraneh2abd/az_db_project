@@ -24,42 +24,7 @@ function HomePage() {
                   A platform for obtaining queries on court cases.
                 </p>
                 <div className="relative flex flex-col sm:flex-row sm:space-x-4">
-                  {/* <Link href="/auth">
-                    <a className="flex items-center w-full px-6 py-3 mb-3 text-lg text-white bg-indigo-700 sm:mb-0 hover:bg-indigo-800 sm:w-auto rounded-2xl">
-                      Get Started Now
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5 ml-1"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                      </svg>
-                    </a>
-                  </Link>
-                  <Link href="/developers">
-                    <a className="flex items-center w-full px-6 py-3 mb-3 text-lg text-white bg-indigo-700 sm:mb-0 hover:bg-indigo-800 sm:w-auto rounded-2xl">
-                      Meet the developers!
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5 ml-1"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                      </svg>
-                    </a>
-                  </Link> */}
+                  
                   <div className="p-3 text-white bg-indigo-700 rounded-full">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -167,15 +132,15 @@ function HomePage() {
           </div>
         </div>
       </section>
-{/* 
       <section className="py-16 bg-white">
         <div className="container max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold tracking-tight text-center">
-            Our Features
+            Our Query Options
           </h2>
           <p className="mt-2 text-lg text-center text-gray-600">
-            Check out our list of awesome features below.
+            Check out our list of queries you can get in below.
           </p>
+{/* 
           <div className="grid grid-cols-4 gap-8 mt-10 sm:grid-cols-8 lg:grid-cols-12 sm:px-8 xl:px-0">
             <div className="relative flex flex-col items-center justify-between col-span-4 px-8 py-12 space-y-4 overflow-hidden bg-gray-100 sm:rounded-xl">
               <div className="p-3 text-white bg-blue-500 rounded-full">
@@ -331,10 +296,47 @@ function HomePage() {
               <p className="text-base text-center text-gray-500">
                  The system shall work accurately without high failure or error.
               </p>
+              </div>
             </div>
-          </div>
+              */}
+          <Link href="/auth">
+                    <a className="flex items-center w-full px-6 py-3 mb-3 text-lg text-white bg-indigo-700 sm:mb-0 hover:bg-indigo-800 sm:w-auto rounded-2xl">
+                      Get Started Now
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-5 h-5 ml-1"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </a>
+                  </Link>
+                  <Link href="/developers">
+                    <a className="flex items-center w-full px-6 py-3 mb-3 text-lg text-white bg-indigo-700 sm:mb-0 hover:bg-indigo-800 sm:w-auto rounded-2xl">
+                      Meet the developers!
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-5 h-5 ml-1"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </a>
+                  </Link>
         </div>
-      </section> */}
+      </section> 
 
       <div className="bg-gray-900">
         <footer className="flex flex-wrap items-center justify-between p-3 m-auto">
