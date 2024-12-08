@@ -135,6 +135,9 @@ function HomePage() {
           </div>
         </div>
       </section>
+      
+      
+
       <section className="py-16 bg-white">
           <h2 className="text-4xl font-bold tracking-tight text-center">
             Our Query Options
@@ -143,7 +146,30 @@ function HomePage() {
             Check out our list of queries you can get in below.
         </p>
         
+<div className="flex justify-center items-center h-screen">
+  <div className="space-x-4">
+    <Link href="https://github.com/taraneh2abd/az_db_project?tab=readme-ov-file">
+      <a className="py-4 px-6 bg-indigo-700 hover:bg-blue-500 text-white hover:text-black rounded transition duration-300 text-lg">
+        Fatemeh Abdellai / Iman Ghader
+      </a>
+    </Link>
 
+    <Link href="https://github.com/taraneh2abd/az_db_project?tab=readme-ov-file">
+      <a className="py-4 px-6 bg-blue-500 text-white hover:text-black rounded transition duration-300 text-lg">
+        Fatemeh Abdellai / Iman Ghader
+      </a>
+    </Link>
+
+    <Link href="https://github.com/taraneh2abd/az_db_project?tab=readme-ov-file">
+      <a className="py-4 px-6 bg-indigo-700 hover:bg-blue-500 text-white hover:text-black rounded transition duration-300 text-lg">
+        Fatemeh Abdellai / Iman Ghader
+      </a>
+    </Link>
+  </div>
+</div>
+
+      
+        
 <div className="flex flex-col items-center justify-center space-y-4">
       <ButtonWithInput 
       />
