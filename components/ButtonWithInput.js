@@ -7,7 +7,7 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
       <button
-        className="flex items-center w-[1000px] px-6 py-3 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl"
+        className="flex items-center w-[1200px] px-8 py-3 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl"
         onClick={() => setIsOpen(!isOpen)}
       >
         {buttonText}
@@ -27,27 +27,50 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
       </button>
 
       {isOpen && (
-        <div className="mt-4 w-[1000px] bg-gray-100 p-4 rounded-2xl">
-          <div className="space-y-2">
-            {placeholders.map((placeholder, index) => (
-              <input
-                key={index}
-                type="text"
-                placeholder={placeholder}
-                className="w-full px-4 py-2 border rounded-lg text-gray-600"
-              />
-            ))}
-          </div>
-          <div className="flex justify-center mt-4">
-            <button
-              className="w-[200px] px-6 py-2 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl"
-              onClick={() => setShowTable(true)}
-            >
-              Apply
-            </button>
-          </div>
+        <div className="mt-4 w-[1200px] bg-gray-100 p-4 rounded-2xl">
+<div className="flex mt-4">
+  <div className="w-[1000px] bg-gray-100 p-4 rounded-2xl">
+    <div className="space-y-2">
+      {placeholders.map((placeholder, index) => (
+        <input
+          key={index}
+          type="text"
+          placeholder={placeholder}
+          className="w-full px-4 py-2 border rounded-lg text-gray-600"
+        />
+      ))}
+    </div>
+    <div className="flex justify-center mt-4">
+      <button
+        className="w-[200px] px-6 py-2 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl"
+        onClick={() => setShowTable(true)}
+      >
+        Apply
+      </button>
+    </div>
+  </div>
+
+  <div className="ml-4 w-[1000px] bg-gray-300 p-4 rounded-2xl overflow-auto max-h-[400px]">
+    <pre className="text-sm text-gray-800">
+      {`-- Sample SQL Code
+SELECT users.id, users.name, orders.amount 
+FROM users 
+JOIN orders ON users.id = orders.user_id
+WHERE orders.amount > 100
+ORDER BY orders.amount DESC
+LIMIT 10;
+SELECT users.id, users.name, orders.amount 
+WHERE orders.amount > 100
+ORDER BY orders.amount DESC
+LIMIT 10;`
+                
+                }
+    </pre>
+  </div>
+</div>
+
           {showTable && (
-            <div className="mt-6 w-full bg-gray-200 rounded-2xl overflow-hidden">
+            <div className="mt-6 w-full bg-gray-200  overflow-hidden">
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="bg-white text-indigo-700">
