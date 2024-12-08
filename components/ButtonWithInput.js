@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 const ButtonWithInput = ({ buttonText, placeholders }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showTable, setShowTable] = useState(false);
 
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
@@ -37,12 +38,44 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
               />
             ))}
           </div>
-<div className="flex justify-center mt-4">
-  <button className="w-[200px] px-6 py-2 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl">
-    Apply
-  </button>
-</div>
-
+          <div className="flex justify-center mt-4">
+            <button
+              className="w-[200px] px-6 py-2 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl"
+              onClick={() => setShowTable(true)}
+            >
+              Apply
+            </button>
+          </div>
+          {showTable && (
+            <div className="mt-6 w-full bg-gray-200 rounded-2xl overflow-hidden">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-white text-indigo-700">
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <th
+                        key={index}
+                        className="px-4 py-2 border border-indigo-700 text-center"
+                      >
+                        Column {index + 1}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <td
+                        key={index}
+                        className="px-4 py-2 border border-indigo-700 text-center text-black"
+                      >
+                        Data {index + 1}
+                      </td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       )}
     </div>
