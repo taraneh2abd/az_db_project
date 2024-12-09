@@ -1,9 +1,33 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/components/*": ["components/*"],
-      "@/helpers/*": ["helpers/*"]
-    }
+  "name": "inspirathon_adalat",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "mongodb": "^4.1.3",
+    "mysql2": "^3.11.5",
+    "next": "12.0.1",
+    "next-auth": "^3.29.0",
+    "next-pwa": "^5.4.0",
+    "nextjs-progressbar": "0.0.13",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-hook-form": "^7.18.0",
+    "react-hot-toast": "^2.1.1",
+    "sequelize": "^6.37.5",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "eslint": "7.32.0",
+    "eslint-config-next": "12.0.1",
+    "postcss": "^8.3.11",
+    "tailwindcss": "^2.2.17"
   }
 }
