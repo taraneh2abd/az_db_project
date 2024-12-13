@@ -10,7 +10,40 @@ FROM users
 JOIN orders ON users.id = orders.user_id
 WHERE orders.amount > 100
 ORDER BY orders.amount DESC
-LIMIT 10;"""})
+LIMIT 10;""",
+  "data": [
+    {
+      "id": 1,
+      "name": "Person A",
+      "amount": 150
+    },
+    {
+      "id": 2,
+      "name": "Person B",
+      "amount": 200
+    },
+    {
+      "id": 3,
+      "name": "Person C",
+      "amount": 180
+    },
+    {
+      "id": 4,
+      "name": "Person A",
+      "amount": 150
+    },
+    {
+      "id": 5,
+      "name": "Person B",
+      "amount": 200
+    },
+    {
+      "id": 6,
+      "name": "Person C",
+      "amount": 180
+    }
+  ]
+})
 
 
 @csrf_exempt

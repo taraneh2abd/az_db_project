@@ -2,30 +2,31 @@ import { useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-
-
 const ButtonWithInput = ({ buttonText, placeholders }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showTable, setShowTable] = useState(false);
   const [showERD, setShowERD] = useState(false);
   const [apiMessage, setApiMessage] = useState(''); // ذخیره پیام API
+  const [tableData, setTableData] = useState([]); // ذخیره داده‌های جدول
 
+  // درخواست به API برای دریافت پیام SQL و داده‌ها
+  const fetchApiMessage = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/learning_api/');
+      const data = await response.json();
+      setApiMessage(data.message); // ذخیره پیام SQL دریافتی
+      setTableData(data.data); // ذخیره داده‌های جدول
+    } catch (error) {
+      console.error('Error fetching message:', error);
+    }
+  };
 
-const fetchApiMessage = async () => {
-  try {
-    const response = await fetch('http://127.0.0.1:8000/api/learning_api/');
-    const data = await response.json();
-    setApiMessage(data.message); // ذخیره پیام دریافتی
-  } catch (error) {
-    console.error('Error fetching message:', error);
-  }
-};
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
       <button
         className="flex items-center w-[1200px] px-8 py-3 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl"
         onClick={() => setIsOpen(!isOpen)}
-        >
+      >
         {buttonText}
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -36,7 +37,7 @@ const fetchApiMessage = async () => {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          >
+        >
           <line x1="5" y1="12" x2="19" y2="12"></line>
           <polyline points="12 5 19 12 12 19"></polyline>
         </svg>
@@ -49,11 +50,11 @@ const fetchApiMessage = async () => {
               <div className="space-y-2">
                 {placeholders.map((placeholder, index) => (
                   <input
-                  key={index}
-                  type="text"
-                  placeholder={placeholder}
+                    key={index}
+                    type="text"
+                    placeholder={placeholder}
                     className="w-full px-4 py-2 border rounded-lg text-gray-600"
-                    />
+                  />
                 ))}
               </div>
               <div className="flex justify-center mt-4">
@@ -61,7 +62,7 @@ const fetchApiMessage = async () => {
                   className="w-[200px] px-6 py-2 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl"
                   onClick={() => {
                     setShowTable(true);
-                    fetchApiMessage();
+                    fetchApiMessage(); // وقتی دکمه فشرده می‌شود، داده‌ها را بارگذاری می‌کند
                   }}
                 >
                   Apply
@@ -70,17 +71,14 @@ const fetchApiMessage = async () => {
             </div>
 
             <div className="relative ml-4 w-[1000px] bg-gray-300 p-4 rounded-2xl overflow-auto max-h-[400px]">
-              {/* <pre> */}
-                <SyntaxHighlighter language="sql" style={docco}>
-
+              {/* نمایش پیام SQL در باکس */}
+              <SyntaxHighlighter language="sql" style={docco}>
                 {apiMessage}
-                </SyntaxHighlighter>
-              {/* </pre> */}
-
-              <button
+              </SyntaxHighlighter>
+                          <button
                 className="absolute top-4 right-4 px-4 py-2 text-white bg-indigo-700 hover:bg-indigo-800 rounded-lg"
                 onClick={() => setShowERD(true)}
-              >
+                >
                 Show ERD
               </button>
 
@@ -90,14 +88,14 @@ const fetchApiMessage = async () => {
                     <button
                       className="absolute top-2 right-2 px-2 py-1 text-sm text-white bg-red-600 hover:bg-red-700 rounded"
                       onClick={() => setShowERD(false)}
-                    >
+                      >
                       Close
                     </button>
                     <img src="/Final_ERD.png" alt="ERD Diagram" className="max-w-full h-auto" />
                   </div>
                 </div>
               )}
-            </div>
+              </div>
           </div>
 
           {showTable && (
@@ -105,27 +103,27 @@ const fetchApiMessage = async () => {
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="bg-white text-indigo-700">
-                    {Array.from({ length: 5 }).map((_, index) => (
-                      <th
-                        key={index}
-                        className="px-4 py-2 border border-indigo-700 text-center"
-                      >
-                        Column {index + 1}
-                      </th>
-                    ))}
+                    <th className="px-4 py-2 border border-indigo-700 text-center">ID</th>
+                    <th className="px-4 py-2 border border-indigo-700 text-center">Name</th>
+                    <th className="px-4 py-2 border border-indigo-700 text-center">Amount</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    {Array.from({ length: 5 }).map((_, index) => (
-                      <td
-                        key={index}
-                        className="px-4 py-2 border border-indigo-700 text-center text-black"
-                      >
-                        Data {index + 1}
+                  {tableData.length > 0 ? (
+                    tableData.map((row, index) => (
+                      <tr key={index}>
+                        <td className="px-4 py-2 border border-indigo-700 text-center">{row.id}</td>
+                        <td className="px-4 py-2 border border-indigo-700 text-center">{row.name}</td>
+                        <td className="px-4 py-2 border border-indigo-700 text-center">{row.amount}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="3" className="px-4 py-2 border border-indigo-700 text-center">
+                        No data available
                       </td>
-                    ))}
-                  </tr>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
