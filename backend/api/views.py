@@ -4,6 +4,16 @@ import json
 import mysql.connector
 
 @csrf_exempt
+def learning_api(request):
+    return JsonResponse({"message": """SELECT users.id, users.name, orders.amount
+FROM users 
+JOIN orders ON users.id = orders.user_id
+WHERE orders.amount > 100
+ORDER BY orders.amount DESC
+LIMIT 10;"""})
+
+
+@csrf_exempt
 def execute_query(request):
     if request.method == "POST":
         try:
