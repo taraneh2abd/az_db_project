@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { docco } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
 
 const ButtonWithInput = ({ buttonText, placeholders }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,7 +55,7 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
             </div>
 
             <div className="relative ml-4 w-[1000px] bg-gray-300 p-4 rounded-2xl overflow-auto max-h-[400px]">
-              <pre className="text-sm text-gray-800">
+                           <SyntaxHighlighter language="sql" style={docco}>
                 {`-- Sample SQL Code
 SELECT users.id, users.name, orders.amount 
 FROM users 
@@ -60,7 +63,7 @@ JOIN orders ON users.id = orders.user_id
 WHERE orders.amount > 100
 ORDER BY orders.amount DESC
 LIMIT 10;`}
-              </pre>
+              </SyntaxHighlighter>
 
               <button
                 className="absolute top-4 right-4 px-4 py-2 text-white bg-indigo-700 hover:bg-indigo-800 rounded-lg"
