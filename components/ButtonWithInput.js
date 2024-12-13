@@ -7,13 +7,13 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showTable, setShowTable] = useState(false);
   const [showERD, setShowERD] = useState(false);
-
+  
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
       <button
         className="flex items-center w-[1200px] px-8 py-3 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl"
         onClick={() => setIsOpen(!isOpen)}
-      >
+        >
         {buttonText}
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +24,7 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-        >
+          >
           <line x1="5" y1="12" x2="19" y2="12"></line>
           <polyline points="12 5 19 12 12 19"></polyline>
         </svg>
@@ -37,11 +37,11 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
               <div className="space-y-2">
                 {placeholders.map((placeholder, index) => (
                   <input
-                    key={index}
-                    type="text"
-                    placeholder={placeholder}
+                  key={index}
+                  type="text"
+                  placeholder={placeholder}
                     className="w-full px-4 py-2 border rounded-lg text-gray-600"
-                  />
+                    />
                 ))}
               </div>
               <div className="flex justify-center mt-4">
@@ -56,8 +56,8 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
 
             <div className="relative ml-4 w-[1000px] bg-gray-300 p-4 rounded-2xl overflow-auto max-h-[400px]">
                            <SyntaxHighlighter language="sql" style={docco}>
-                {`-- Sample SQL Code
-SELECT users.id, users.name, orders.amount 
+                {
+`SELECT users.id, users.name, orders.amount
 FROM users 
 JOIN orders ON users.id = orders.user_id
 WHERE orders.amount > 100
