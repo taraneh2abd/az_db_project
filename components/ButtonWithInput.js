@@ -6,16 +6,15 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showTable, setShowTable] = useState(false);
   const [showERD, setShowERD] = useState(false);
-  const [apiMessage, setApiMessage] = useState(''); // ذخیره پیام API
-  const [tableData, setTableData] = useState([]); // ذخیره داده‌های جدول
+  const [apiMessage, setApiMessage] = useState('');
+  const [tableData, setTableData] = useState([]);
 
-  // درخواست به API برای دریافت پیام SQL و داده‌ها
   const fetchApiMessage = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/api/learning_api/');
       const data = await response.json();
-      setApiMessage(data.message); // ذخیره پیام SQL دریافتی
-      setTableData(data.data); // ذخیره داده‌های جدول
+      setApiMessage(data.message);
+      setTableData(data.data);
     } catch (error) {
       console.error('Error fetching message:', error);
     }
@@ -62,7 +61,7 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
                   className="w-[200px] px-6 py-2 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl"
                   onClick={() => {
                     setShowTable(true);
-                    fetchApiMessage(); // وقتی دکمه فشرده می‌شود، داده‌ها را بارگذاری می‌کند
+                    fetchApiMessage();
                   }}
                 >
                   Apply
@@ -71,7 +70,6 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
             </div>
 
             <div className="relative ml-4 w-[1000px] bg-gray-300 p-4 rounded-2xl overflow-auto max-h-[400px]">
-              {/* نمایش پیام SQL در باکس */}
               <SyntaxHighlighter language="sql" style={docco}>
                 {apiMessage}
               </SyntaxHighlighter>
@@ -99,27 +97,33 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
           </div>
 
           {showTable && (
-            <div className="mt-6 w-full bg-gray-200 overflow-hidden">
+            <div className="mt-6 w-full bg-gray-200 overflow-auto">
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="bg-white text-indigo-700">
-                    <th className="px-4 py-2 border border-indigo-700 text-center">ID</th>
-                    <th className="px-4 py-2 border border-indigo-700 text-center">Name</th>
-                    <th className="px-4 py-2 border border-indigo-700 text-center">Amount</th>
+                    {/* ایجاد هدرهای جدول داینامیک */}
+                    {tableData.length > 0 && Object.keys(tableData[0]).map((key, index) => (
+                      <th key={index} className="px-4 py-2 border border-indigo-700 text-center">
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
                   {tableData.length > 0 ? (
                     tableData.map((row, index) => (
                       <tr key={index}>
-                        <td className="px-4 py-2 border border-indigo-700 text-center">{row.id}</td>
-                        <td className="px-4 py-2 border border-indigo-700 text-center">{row.name}</td>
-                        <td className="px-4 py-2 border border-indigo-700 text-center">{row.amount}</td>
+                        {/* ایجاد ردیف‌های جدول داینامیک */}
+                        {Object.values(row).map((value, idx) => (
+                          <td key={idx} className="px-4 py-2 border border-indigo-700 text-center">
+                            {value}
+                          </td>
+                        ))}
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="3" className="px-4 py-2 border border-indigo-700 text-center">
+                      <td colSpan="100%" className="px-4 py-2 border border-indigo-700 text-center">
                         No data available
                       </td>
                     </tr>
