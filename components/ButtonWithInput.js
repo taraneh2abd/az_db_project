@@ -2,16 +2,17 @@ import { useState } from 'react';
 // import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 // import { docco } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-const ButtonWithInput = ({ buttonText, placeholders }) => {
+const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showTable, setShowTable] = useState(false);
   const [showERD, setShowERD] = useState(false);
   const [apiMessage, setApiMessage] = useState('');
   const [tableData, setTableData] = useState([]);
   const [inputs, setInputs] = useState(placeholders.reduce((acc, placeholder) => {
-    acc[placeholder] = '';  // تنظیم ورودی‌ها به صورت دیکشنری با کلیدهای مشابه placeholder
+    acc[placeholder] = '';
     return acc;
   }, {}));
+  const [selectedButton, setSelectedButton] = useState(null);
 
   const handleInputChange = (e, placeholder) => {
     setInputs(prevInputs => ({
@@ -19,14 +20,18 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
       [placeholder]: e.target.value
     }));
   };
-const fetchApiMessage = async () => {
+
+  const fetchApiMessage = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/api/test_connection/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(inputs)  // ارسال ورودی‌ها به بک
+        body: JSON.stringify({
+          ...inputs, 
+          buttonIndex: selectedButton
+        })
       });
       const data = await response.json();
       setApiMessage(data.message);
@@ -40,7 +45,10 @@ const fetchApiMessage = async () => {
     <div className="flex flex-col items-center justify-center space-y-4">
       <button
         className="flex items-center w-[1200px] px-8 py-3 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          setIsOpen(!isOpen);
+          setSelectedButton(buttonIndex);
+        }}
       >
         {buttonText}
         <svg
@@ -64,11 +72,11 @@ const fetchApiMessage = async () => {
             <div className="w-[1000px] bg-gray-100 p-4 rounded-2xl">
               <div className="space-y-2">
                 {placeholders.map((placeholder, index) => (
-                    <input
+                  <input
                     key={index}
                     type="text"
-                    value={inputs[placeholder]}  // تنظیم مقدار ورودی از state
-                    onChange={(e) => handleInputChange(e, placeholder)}  // ذخیره ورودی در state
+                    value={inputs[placeholder]}
+                    onChange={(e) => handleInputChange(e, placeholder)}
                     placeholder={placeholder}
                     className="w-full px-4 py-2 border rounded-lg text-gray-600"
                   />
@@ -88,13 +96,11 @@ const fetchApiMessage = async () => {
             </div>
 
             <div className="relative ml-4 w-[1000px] bg-gray-300 p-4 rounded-2xl overflow-auto max-h-[400px]">
-              {/* <SyntaxHighlighter language="sql" style={docco}> */}
-                {apiMessage}
-              {/* </SyntaxHighlighter> */}
-                          <button
+              {apiMessage}
+              <button
                 className="absolute top-4 right-4 px-4 py-2 text-white bg-indigo-700 hover:bg-indigo-800 rounded-lg"
                 onClick={() => setShowERD(true)}
-                >
+              >
                 Show ERD
               </button>
 
@@ -104,14 +110,14 @@ const fetchApiMessage = async () => {
                     <button
                       className="absolute top-2 right-2 px-2 py-1 text-sm text-white bg-red-600 hover:bg-red-700 rounded"
                       onClick={() => setShowERD(false)}
-                      >
+                    >
                       Close
                     </button>
                     <img src="/Final_ERD.png" alt="ERD Diagram" className="max-w-full h-auto" />
                   </div>
                 </div>
               )}
-              </div>
+            </div>
           </div>
 
           {showTable && (
@@ -119,7 +125,6 @@ const fetchApiMessage = async () => {
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="bg-white text-indigo-700">
-                    {/* ایجاد هدرهای جدول داینامیک */}
                     {tableData.length > 0 && Object.keys(tableData[0]).map((key, index) => (
                       <th key={index} className="px-4 py-2 border border-indigo-700 text-center">
                         {key.charAt(0).toUpperCase() + key.slice(1)}
@@ -131,7 +136,6 @@ const fetchApiMessage = async () => {
                   {tableData.length > 0 ? (
                     tableData.map((row, index) => (
                       <tr key={index}>
-                        {/* ایجاد ردیف‌های جدول داینامیک */}
                         {Object.values(row).map((value, idx) => (
                           <td key={idx} className="px-4 py-2 border border-indigo-700 text-center">
                             {value}
@@ -162,22 +166,27 @@ const App = () => {
       <ButtonWithInput 
         buttonText="Show all Evidence of all Case which these 4 persons were involved" 
         placeholders={["person-id (defendant)", "Person-id (plaintiff)", "Lawyer-id", "Judge-id"]}
+        buttonIndex={1}
       />
       <ButtonWithInput 
         buttonText="Show All Sessions of a Court Branch between 2 Dates" 
         placeholders={["Court-branch-id", "Start-Date","End-Date"]}
+        buttonIndex={2}
       />
       <ButtonWithInput 
         buttonText="Show Juridical History of a Person (all case-id)" 
         placeholders={["Person-id", "Case type"]}
+        buttonIndex={3}
       />
       <ButtonWithInput 
         buttonText="Show all cases of this Trio which always has Won" 
         placeholders={["Person-id", "Lawyer-id","Judge-id"]}
+        buttonIndex={4}
       />
       <ButtonWithInput 
         buttonText="Show All Appeals of a Court Branch between 2 Dates" 
         placeholders={["Court-branch-id", "Start-Date","End-Date"]}
+        buttonIndex={5}
       />
     </div>
   );
