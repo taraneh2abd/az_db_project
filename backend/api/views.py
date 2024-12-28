@@ -1,259 +1,60 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import oracledb
 import json
-import mysql.connector
 
+
+DB_USER = "neo"
+DB_PASSWORD = "trinity123"
+DB_DSN = "localhost:1521/THEMATRIX"  
+
+
+import json
+import oracledb
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+# اتصال به Oracle Database
+def get_oracle_connection():
+    return oracledb.connect(user=DB_USER, password=DB_PASSWORD, dsn=DB_DSN)
+
+# API برای تست اتصال و تبدیل داده‌ها به JSON
 @csrf_exempt
-def learning_api(request):
-    return JsonResponse({"message": """SELECT users.id, users.name, orders.amount
-FROM users 
-JOIN orders ON users.id = orders.user_id
-WHERE orders.amount > 100
-ORDER BY orders.amount DESC
-LIMIT 10;""",
-    "data": [
-    {
-      "id": 1,
-      "name": "Person A",
-      "amount": 150,
-      "age": 30,
-      "country": "USA",
-      "city": "New York",
-      "occupation": "Engineer",
-      "salary": 50000,
-      "education": "Bachelor's",
-      "status": "Single",
-      "phone": "123-456-7890",
-      "email": "personA@example.com",
-      "address": "123 Main St",
-      "zip": "10001",
-      "company": "TechCorp"
-    },
-    {
-      "id": 3,
-      "name": "Person B",
-      "amount": 200,
-      "age": 35,
-      "country": "Canada",
-      "city": "Toronto",
-      "occupation": "Designer",
-      "salary": 60000,
-      "education": "Master's",
-      "status": "Married",
-      "phone": "234-567-8901",
-      "email": "personB@example.com",
-      "address": "456 Oak St",
-      "zip": "20002",
-      "company": "DesignPro"
-    },
-    {
-      "id": 4,
-      "name": "Person A",
-      "amount": 150,
-      "age": 30,
-      "country": "USA",
-      "city": "New York",
-      "occupation": "Engineer",
-      "salary": 50000,
-      "education": "Bachelor's",
-      "status": "Single",
-      "phone": "123-456-7890",
-      "email": "personA@example.com",
-      "address": "123 Main St",
-      "zip": "10001",
-      "company": "TechCorp"
-    },
-    {
-      "id": 5,
-      "name": "Person B",
-      "amount": 200,
-      "age": 35,
-      "country": "Canada",
-      "city": "Toronto",
-      "occupation": "Designer",
-      "salary": 60000,
-      "education": "Master's",
-      "status": "Married",
-      "phone": "234-567-8901",
-      "email": "personB@example.com",
-      "address": "456 Oak St",
-      "zip": "20002",
-      "company": "DesignPro"
-    },
-    {
-      "id": 6,
-      "name": "Person A",
-      "amount": 150,
-      "age": 30,
-      "country": "USA",
-      "city": "New York",
-      "occupation": "Engineer",
-      "salary": 50000,
-      "education": "Bachelor's",
-      "status": "Single",
-      "phone": "123-456-7890",
-      "email": "personA@example.com",
-      "address": "123 Main St",
-      "zip": "10001",
-      "company": "TechCorp"
-    },
-    {
-      "id": 2,
-      "name": "Person B",
-      "amount": 200,
-      "age": 35,
-      "country": "Canada",
-      "city": "Toronto",
-      "occupation": "Designer",
-      "salary": 60000,
-      "education": "Master's",
-      "status": "Married",
-      "phone": "234-567-8901",
-      "email": "personB@example.com",
-      "address": "456 Oak St",
-      "zip": "20002",
-      "company": "DesignPro"
-    },
-    {
-      "id": 1,
-      "name": "Person A",
-      "amount": 150,
-      "age": 30,
-      "country": "USA",
-      "city": "New York",
-      "occupation": "Engineer",
-      "salary": 50000,
-      "education": "Bachelor's",
-      "status": "Single",
-      "phone": "123-456-7890",
-      "email": "personA@example.com",
-      "address": "123 Main St",
-      "zip": "10001",
-      "company": "TechCorp"
-    },
-    {
-      "id": 3,
-      "name": "Person B",
-      "amount": 200,
-      "age": 35,
-      "country": "Canada",
-      "city": "Toronto",
-      "occupation": "Designer",
-      "salary": 60000,
-      "education": "Master's",
-      "status": "Married",
-      "phone": "234-567-8901",
-      "email": "personB@example.com",
-      "address": "456 Oak St",
-      "zip": "20002",
-      "company": "DesignPro"
-    },
-    {
-      "id": 4,
-      "name": "Person A",
-      "amount": 150,
-      "age": 30,
-      "country": "USA",
-      "city": "New York",
-      "occupation": "Engineer",
-      "salary": 50000,
-      "education": "Bachelor's",
-      "status": "Single",
-      "phone": "123-456-7890",
-      "email": "personA@example.com",
-      "address": "123 Main St",
-      "zip": "10001",
-      "company": "TechCorp"
-    },
-    {
-      "id": 5,
-      "name": "Person B",
-      "amount": 200,
-      "age": 35,
-      "country": "Canada",
-      "city": "Toronto",
-      "occupation": "Designer",
-      "salary": 60000,
-      "education": "Master's",
-      "status": "Married",
-      "phone": "234-567-8901",
-      "email": "personB@example.com",
-      "address": "456 Oak St",
-      "zip": "20002",
-      "company": "DesignPro"
-    },
-    {
-      "id": 6,
-      "name": "Person A",
-      "amount": 150,
-      "age": 30,
-      "country": "USA",
-      "city": "New York",
-      "occupation": "Engineer",
-      "salary": 50000,
-      "education": "Bachelor's",
-      "status": "Single",
-      "phone": "123-456-7890",
-      "email": "personA@example.com",
-      "address": "123 Main St",
-      "zip": "10001",
-      "company": "TechCorp"
-    },
-    {
-      "id": 2,
-      "name": "Person B",
-      "amount": 200,
-      "age": 35,
-      "country": "Canada",
-      "city": "Toronto",
-      "occupation": "Designer",
-      "salary": 60000,
-      "education": "Master's",
-      "status": "Married",
-      "phone": "234-567-8901",
-      "email": "personB@example.com",
-      "address": "456 Oak St",
-      "zip": "20002",
-      "company": "DesignPro"
-    },
-  ]
-})
+def test_connection(request):
+    try:
+        # اتصال به دیتابیس
+        connection = get_oracle_connection()
+        cursor = connection.cursor()
 
+        # اجرای دستور SQL برای دریافت کل داده‌های جدول
+        cursor.execute("SELECT * FROM INVOLVED_PARTY")
 
-@csrf_exempt
-def execute_query(request):
-    if request.method == "POST":
-        try:
-            # دریافت داده‌های ورودی
-            data = json.loads(request.body)
-            field1 = data.get("field1")
-            field2 = data.get("field2")
+        # گرفتن نام ستون‌ها
+        column_names = [col[0] for col in cursor.description]
 
-            # تنظیمات دیتابیس
-            connection = mysql.connector.connect(
-                host="localhost",
-                user="your_user",
-                password="your_password",
-                database="your_database"
-            )
-            cursor = connection.cursor()
+        # گرفتن تمام ردیف‌ها
+        rows = cursor.fetchall()
 
-            # اجرای دستور SQL
-            query = "INSERT INTO your_table (field1, field2) VALUES (%s, %s)"
-            cursor.execute(query, (field1, field2))
-            connection.commit()
+        # تبدیل هر ردیف به یک دیکشنری
+        data_list = []
+        for row in rows:
+            row_dict = {}
+            for index, value in enumerate(row):
+                # بررسی داده‌های CLOB و BLOB
+                if isinstance(value, oracledb.LOB):
+                    row_dict[column_names[index]] = value.read() if value else None
+                else:
+                    row_dict[column_names[index]] = value
+            data_list.append(row_dict)
 
-            # برگرداندن جدول‌ها
-            cursor.execute("SHOW TABLES")
-            tables = cursor.fetchall()
+        # تبدیل به JSON
+        json_data = json.dumps(data_list, ensure_ascii=False)
 
-            return JsonResponse({"message": "Query executed!", "tables": [table[0] for table in tables]})
+        # بستن ارتباط با دیتابیس
+        cursor.close()
+        connection.close()
 
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=400)
+        return JsonResponse(json.loads(json_data), safe=False)
 
-        finally:
-            cursor.close()
-            connection.close()
-    else:
-        return JsonResponse({"error": "Invalid method"}, status=405)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

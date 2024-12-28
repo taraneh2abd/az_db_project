@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import execute_query,learning_api
+from . import views
 
 urlpatterns = [
-    path('execute_query/', execute_query, name='execute_query'),
-    path('learning_api/', learning_api, name='learning_api'),
+    path('test_connection/', views.test_connection, name='test_connection'),
+    # path('execute_query/', views.execute_query, name='execute_query'),
 ]
