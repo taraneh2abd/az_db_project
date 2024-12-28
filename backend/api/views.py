@@ -19,6 +19,7 @@ def get_oracle_connection():
     return oracledb.connect(user=DB_USER, password=DB_PASSWORD, dsn=DB_DSN)
 
 # API برای تست اتصال و تبدیل داده‌ها به JSON
+
 @csrf_exempt
 def test_connection(request):
     try:
@@ -47,14 +48,22 @@ def test_connection(request):
                     row_dict[column_names[index]] = value
             data_list.append(row_dict)
 
-        # تبدیل به JSON
-        json_data = json.dumps(data_list, ensure_ascii=False)
-
         # بستن ارتباط با دیتابیس
         cursor.close()
         connection.close()
 
-        return JsonResponse(json.loads(json_data), safe=False)
+        # ایجاد خروجی JSON با ساختار دلخواه
+        response = {
+            "data": data_list,
+            "message": """
+  SELECT
+  *
+FROM
+  INVOLVED_PARTY;
+
+"""
+        }
+        return JsonResponse(response, safe=False)
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
