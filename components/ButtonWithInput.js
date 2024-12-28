@@ -96,7 +96,9 @@ const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
             </div>
 
             <div className="relative ml-4 w-[1000px] bg-gray-300 p-4 rounded-2xl overflow-auto max-h-[400px]">
+              {/* <SyntaxHighlighter language="sql" style={docco}> */}
               {apiMessage}
+              {/* </SyntaxHighlighter> */}
               <button
                 className="absolute top-4 right-4 px-4 py-2 text-white bg-indigo-700 hover:bg-indigo-800 rounded-lg"
                 onClick={() => setShowERD(true)}
