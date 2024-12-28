@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { docco } from 'react-syntax-highlighter/dist/esm/styles/prism';
+// import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+// import { docco } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const ButtonWithInput = ({ buttonText, placeholders }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,10 +8,26 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
   const [showERD, setShowERD] = useState(false);
   const [apiMessage, setApiMessage] = useState('');
   const [tableData, setTableData] = useState([]);
+  const [inputs, setInputs] = useState(placeholders.reduce((acc, placeholder) => {
+    acc[placeholder] = '';  // تنظیم ورودی‌ها به صورت دیکشنری با کلیدهای مشابه placeholder
+    return acc;
+  }, {}));
 
-  const fetchApiMessage = async () => {
+  const handleInputChange = (e, placeholder) => {
+    setInputs(prevInputs => ({
+      ...prevInputs,
+      [placeholder]: e.target.value
+    }));
+  };
+const fetchApiMessage = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/test_connection/');
+      const response = await fetch('http://127.0.0.1:8000/api/test_connection/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(inputs)  // ارسال ورودی‌ها به بک
+      });
       const data = await response.json();
       setApiMessage(data.message);
       setTableData(data.data);
@@ -48,9 +64,11 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
             <div className="w-[1000px] bg-gray-100 p-4 rounded-2xl">
               <div className="space-y-2">
                 {placeholders.map((placeholder, index) => (
-                  <input
+                    <input
                     key={index}
                     type="text"
+                    value={inputs[placeholder]}  // تنظیم مقدار ورودی از state
+                    onChange={(e) => handleInputChange(e, placeholder)}  // ذخیره ورودی در state
                     placeholder={placeholder}
                     className="w-full px-4 py-2 border rounded-lg text-gray-600"
                   />
@@ -70,9 +88,9 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
             </div>
 
             <div className="relative ml-4 w-[1000px] bg-gray-300 p-4 rounded-2xl overflow-auto max-h-[400px]">
-              <SyntaxHighlighter language="sql" style={docco}>
+              {/* <SyntaxHighlighter language="sql" style={docco}> */}
                 {apiMessage}
-              </SyntaxHighlighter>
+              {/* </SyntaxHighlighter> */}
                           <button
                 className="absolute top-4 right-4 px-4 py-2 text-white bg-indigo-700 hover:bg-indigo-800 rounded-lg"
                 onClick={() => setShowERD(true)}

@@ -23,7 +23,14 @@ def get_oracle_connection():
 @csrf_exempt
 def test_connection(request):
     try:
-        
+        input_data = request.body.decode('utf-8')  # دریافت داده‌های خام
+        try:
+            parsed_data = json.loads(input_data)  # تبدیل به JSON (در صورت امکان)
+            print(parsed_data)
+        except json.JSONDecodeError:
+            parsed_data = input_data  # اگر JSON نبود، همان رشته را ذخیره می‌کنیم
+
+
         connection = get_oracle_connection()
         cursor = connection.cursor()
 
