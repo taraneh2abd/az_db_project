@@ -1,44 +1,25 @@
 import { useState } from 'react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { docco } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const ButtonWithInput = ({ buttonText, placeholders }) => {
-  const [formData, setFormData] = useState({
-    field1: '',
-    field2: '',
-  });
-
-  const [tableData, setTableData] = useState([]); // داده‌های جدول
-  const [isOpen, setIsOpen] = useState(false); // باز و بسته کردن فرم
-  const [showTable, setShowTable] = useState(false); // نمایش جدول
-  const [apiMessage, setApiMessage] = useState(''); // پیام API
-  const [showERD, setShowERD] = useState(false); // نمایش ERD
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const [isOpen, setIsOpen] = useState(false);
+  const [showTable, setShowTable] = useState(false);
+  const [showERD, setShowERD] = useState(false);
+  const [apiMessage, setApiMessage] = useState('');
+  const [tableData, setTableData] = useState([]);
 
   const fetchApiMessage = async () => {
     try {
-      // ارسال داده‌های ورودی به API
-      const response = await fetch('http://127.0.0.1:8000//api/test_connection/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      // دریافت داده‌ها از API
-      const data = await response.text(); // دریافت متن پاسخ
-      setApiMessage(data); // ذخیره پیام API
+      const response = await fetch('http://127.0.0.1:8000/api/test_connection/');
+      const data = await response.json();
+      setApiMessage(data.message);
+      setTableData(data.data);
     } catch (error) {
-      console.error('Error submitting form:', error);
-      setApiMessage('Error: Unable to connect to the server.');
+      console.error('Error fetching message:', error);
     }
   };
+
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
       <button
@@ -70,11 +51,8 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
                   <input
                     key={index}
                     type="text"
-                    name={`field${index + 1}`}
                     placeholder={placeholder}
                     className="w-full px-4 py-2 border rounded-lg text-gray-600"
-                    value={formData[`field${index + 1}`]}
-                    onChange={handleChange}
                   />
                 ))}
               </div>
@@ -92,11 +70,13 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
             </div>
 
             <div className="relative ml-4 w-[1000px] bg-gray-300 p-4 rounded-2xl overflow-auto max-h-[400px]">
-              {apiMessage && <div className="text-gray-700">{apiMessage}</div>}
-              <button
+              <SyntaxHighlighter language="sql" style={docco}>
+                {apiMessage}
+              </SyntaxHighlighter>
+                          <button
                 className="absolute top-4 right-4 px-4 py-2 text-white bg-indigo-700 hover:bg-indigo-800 rounded-lg"
                 onClick={() => setShowERD(true)}
-              >
+                >
                 Show ERD
               </button>
 
@@ -106,14 +86,14 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
                     <button
                       className="absolute top-2 right-2 px-2 py-1 text-sm text-white bg-red-600 hover:bg-red-700 rounded"
                       onClick={() => setShowERD(false)}
-                    >
+                      >
                       Close
                     </button>
                     <img src="/Final_ERD.png" alt="ERD Diagram" className="max-w-full h-auto" />
                   </div>
                 </div>
               )}
-            </div>
+              </div>
           </div>
 
           {showTable && (
@@ -121,6 +101,7 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="bg-white text-indigo-700">
+                    {/* ایجاد هدرهای جدول داینامیک */}
                     {tableData.length > 0 && Object.keys(tableData[0]).map((key, index) => (
                       <th key={index} className="px-4 py-2 border border-indigo-700 text-center">
                         {key.charAt(0).toUpperCase() + key.slice(1)}
@@ -132,6 +113,7 @@ const ButtonWithInput = ({ buttonText, placeholders }) => {
                   {tableData.length > 0 ? (
                     tableData.map((row, index) => (
                       <tr key={index}>
+                        {/* ایجاد ردیف‌های جدول داینامیک */}
                         {Object.values(row).map((value, idx) => (
                           <td key={idx} className="px-4 py-2 border border-indigo-700 text-center">
                             {value}
