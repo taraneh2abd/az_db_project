@@ -3,15 +3,16 @@ from django.views.decorators.csrf import csrf_exempt
 import oracledb
 import json
 
+# اطلاعات اتصال به دیتابیس
 DB_USER = "neo"
 DB_PASSWORD = "trinity123"
 DB_DSN = "localhost:1521/THEMATRIX"
 
-
+# اتصال به دیتابیس اوراکل
 def get_oracle_connection():
     return oracledb.connect(user=DB_USER, password=DB_PASSWORD, dsn=DB_DSN)
 
-
+# دیکشنری کوئری‌ها بر اساس دکمه فشرده شده
 QUERY_MAP = {
     1: """
         SELECT Cases.case_id, Cases.case_type, Cases.description, Appeal.appeal_date, Appeal.reason
@@ -47,7 +48,6 @@ QUERY_MAP = {
     """
 }
 
-
 @csrf_exempt
 def test_connection(request):
     try:
@@ -57,24 +57,31 @@ def test_connection(request):
         print("Received input from front-end:", parsed_data)  # چاپ ورودی دریافت شده
 
         button_index = parsed_data.get("buttonIndex", None)
-        person_id = parsed_data.get("person_id", None)
+        person_id = parsed_data.get("person-id", None)  # مطمئن می‌شویم که کلید درست است
 
+        # بررسی که person_id داده شده باشد و تبدیل به عدد
+        if person_id:
+            try:
+                person_id = int(person_id)  # تبدیل person_id به عدد
+            except ValueError:
+                return JsonResponse({"error": "Invalid person_id format. It must be an integer."}, status=400)
+        else:
+            person_id = None  # اگر person_id خالی باشد، به None تبدیل می‌شود
+
+        # بررسی اینکه آیا buttonIndex معتبر است
         if button_index not in QUERY_MAP:
             return JsonResponse({"error": "Invalid buttonIndex provided."}, status=400)
 
+        # انتخاب کوئری مناسب بر اساس buttonIndex
         query = QUERY_MAP[button_index]
 
         # اگر person_id داده شده باشد، به کوئری شرط INNER JOIN اضافه می‌کنیم
-        if button_index == 1 and person_id:
-            try:
-                person_id = int(person_id)  # تبدیل به عدد
-                join_condition = f"""
-                    INNER JOIN Writes ON Cases.case_id = Writes.case_id
-                    WHERE Writes.writer_id = {person_id}
-                """
-                query = query.format(join_condition=join_condition)
-            except ValueError:
-                return JsonResponse({"error": "Invalid person_id format. It must be an integer."}, status=400)
+        if person_id:
+            join_condition = f"""
+                INNER JOIN Writes ON Cases.case_id = Writes.case_id
+                WHERE Writes.writer_id = {person_id}
+            """
+            query = query.format(join_condition=join_condition)
         else:
             query = query.format(join_condition="")  # اگر person_id وجود ندارد، شرط را خالی می‌کنیم
 
@@ -98,13 +105,14 @@ def test_connection(request):
                     row_dict[column_names[index]] = value if value is not None else "N/A"
             data_list.append(row_dict)
 
+        # بستن اتصال به دیتابیس
         cursor.close()
         connection.close()
 
         # پاسخ با داده‌ها و متن کوئری
         response = {
             "data": data_list if data_list else [],
-            "message": query.strip()
+            "message": query.strip()  # پیام حاوی کوئری اجرا شده
         }
         return JsonResponse(response, safe=False)
 
