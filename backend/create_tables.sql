@@ -279,6 +279,10 @@ INSERT INTO Cases (case_id, case_type, starting_date, finishing_date, status, ju
 VALUES (115, 'Criminal', TO_DATE('2024-08-15', 'YYYY-MM-DD'), TO_DATE('2024-12-01', 'YYYY-MM-DD'), 'Pending', NULL, 'Corruption case');
 INSERT INTO Cases (case_id, case_type, starting_date, finishing_date, status, judgment_date, description)
 VALUES (116, 'Family', TO_DATE('2024-09-01', 'YYYY-MM-DD'), TO_DATE('2024-10-15', 'YYYY-MM-DD'), 'Closed', TO_DATE('2024-10-15', 'YYYY-MM-DD'), 'Domestic violence case');
+INSERT INTO Cases (case_id, case_type, starting_date, finishing_date, status, judgment_date, description)
+VALUES (117, 'Family', TO_DATE('2024-09-01', 'YYYY-MM-DD'), TO_DATE('2024-10-15', 'YYYY-MM-DD'), 'Pending', TO_DATE('2024-10-15', 'YYYY-MM-DD'), 'Devorce Complaint');
+INSERT INTO Cases (case_id, case_type, starting_date, finishing_date, status, judgment_date, description)
+VALUES (118, 'Criminal', TO_DATE('2024-09-01', 'YYYY-MM-DD'), TO_DATE('2024-10-15', 'YYYY-MM-DD'), 'Pending', TO_DATE('2024-10-15', 'YYYY-MM-DD'), 'Drug trafficking');
 
 
 -- Insert data for Representation
