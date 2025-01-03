@@ -17,8 +17,6 @@ QUERY_MAP = {
     1: """
         SELECT 
             i.party_id AS involved_party_id,
-            i.first_name AS involved_party_first_name,
-            i.last_name AS involved_party_last_name,
             c.case_id,
             c.case_type,
             c.description,
