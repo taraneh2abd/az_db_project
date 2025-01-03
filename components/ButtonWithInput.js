@@ -197,7 +197,7 @@ const App = () => {
   return (
     <div className="space-y-6">
       <ButtonWithInput 
-        buttonText="Show all Cases and their Appeal details" 
+        buttonText="Show all Cases and their (Appeal) details (can be empty)" 
         placeholders={["person-id"]}
         buttonIndex={1}
       />
@@ -212,8 +212,8 @@ const App = () => {
         buttonIndex={3}
       />
       <ButtonWithInput 
-        buttonText="Show all cases of this Trio which always has Won" 
-        placeholders={["Person-id", "Lawyer-id","Judge-id"]}
+        buttonText="plaintiff and defendant involved in a case" 
+        placeholders={[]}
         buttonIndex={4}
       />
       <ButtonWithInput 

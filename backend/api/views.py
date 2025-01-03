@@ -72,25 +72,30 @@ INNER JOIN
 LEFT JOIN 
     Verdict v ON c.case_id = v.case_id
     """,
+    
     4: """
-        SELECT 
-            i.party_id AS involved_party_id,
-            i.first_name AS involved_party_first_name,
-            i.last_name AS involved_party_last_name,
-            c.case_id,
-            c.case_type
-        FROM 
-            Involved_Party i
-        INNER JOIN 
-            Role_Assignment r1 ON i.party_id = r1.party_id
-        INNER JOIN 
-            Cases c ON r1.case_id = c.case_id
-        INNER JOIN 
-            Role_Assignment r2 ON c.case_id = r2.case_id
-        INNER JOIN 
-            Involved_Party p2 ON r2.party_id = p2.party_id
-        WHERE 
-            i.party_id != p2.party_id
+SELECT 
+    p1.first_name AS party_1_first_name,
+    p1.last_name AS party_1_last_name,
+    r1.role AS party_1_role,
+    p2.first_name AS party_2_first_name,
+    p2.last_name AS party_2_last_name,
+    r2.role AS party_2_role,
+    c.case_id, c.case_type
+FROM 
+    Involved_Party p1
+INNER JOIN 
+    Role_Assignment r1 ON p1.party_id = r1.party_id
+INNER JOIN 
+    Cases c ON r1.case_id = c.case_id
+INNER JOIN 
+    Role_Assignment r2 ON c.case_id = r2.case_id
+INNER JOIN 
+    Involved_Party p2 ON r2.party_id = p2.party_id
+WHERE 
+    p1.party_id != p2.party_id
+
+
     """,
     5: """
         SELECT 
