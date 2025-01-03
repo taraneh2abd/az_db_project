@@ -55,22 +55,24 @@ QUERY_MAP = {
             Cases c ON w.case_id = c.case_id
     """,
     3: """
-        SELECT 
-            i.party_id AS involved_party_id,
-            i.first_name AS involved_party_first_name,
-            i.last_name AS involved_party_last_name,
-            a.case_id,
-            a.appeal_date,
-            a.reason,
-            c.case_type
-        FROM 
-            Appeal a
-        RIGHT JOIN 
-            Cases c ON a.case_id = c.case_id
-        INNER JOIN 
-            Writes w ON a.case_id = w.case_id
-        INNER JOIN 
-            Involved_Party i ON w.writer_id = i.party_id
+SELECT 
+    ip.party_id AS involved_party_id,
+    ip.first_name AS involved_party_first_name,
+    ip.last_name AS involved_party_last_name,
+    c.case_id,
+    c.case_type,
+    c.description,
+    v.date_issued AS verdict_date,
+    v.verdict_type,
+    v.summary AS verdict_summary
+FROM 
+    Involved_Party ip
+INNER JOIN 
+    Role_Assignment ra ON ip.party_id = ra.party_id
+INNER JOIN 
+    Cases c ON ra.case_id = c.case_id
+LEFT JOIN 
+    Verdict v ON c.case_id = v.case_id
     """,
     4: """
         SELECT 
@@ -133,14 +135,16 @@ def test_connection(request):
         # انتخاب کوئری مناسب بر اساس buttonIndex
         query = QUERY_MAP[button_index]
 
-        # اگر person_id داده شده باشد، به کوئری شرط INNER JOIN اضافه می‌کنیم
-        if person_id:
-            join_condition = f"""
-                WHERE i.party_id = {person_id} 
-            """
+        # بررسی اینکه آیا کوئری شامل {join_condition} است
+        if "{join_condition}" in query:
+            if person_id:
+                join_condition = f"WHERE ip.party_id = {person_id}"
+            else:
+                join_condition = ""  # شرط خالی
             query = query.format(join_condition=join_condition)
-        else:
-            query = query.format(join_condition="")  # اگر person_id وجود ندارد، شرط را خالی می‌کنیم
+
+        # اگر {join_condition} وجود ندارد، مستقیماً از کوئری استفاده کنید
+
 
         # اتصال به دیتابیس
         connection = get_oracle_connection()
