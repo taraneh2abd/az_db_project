@@ -7,7 +7,7 @@ const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
   const [showTable, setShowTable] = useState(false);
   const [showERD, setShowERD] = useState(false);
   const [apiMessage, setApiMessage] = useState('');
-  const [tableData, setTableData] = useState([]); // پیش‌فرض آرایه خالی
+  const [tableData, setTableData] = useState([]);
   const [inputs, setInputs] = useState(placeholders.reduce((acc, placeholder) => {
     acc[placeholder] = '';
     return acc;
@@ -36,11 +36,11 @@ const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
       const data = await response.json();
 
       setApiMessage(data.message);
-      setTableData(data.data || []); // اگر داده‌ای نبود، مقدار پیش‌فرض آرایه خالی باشد
+      setTableData(data.data || []);
     } catch (error) {
       console.error('Error fetching message:', error);
       setApiMessage('Error occurred while fetching data.');
-      setTableData([]); // در صورت خطا، داده‌ها را خالی کنید
+      setTableData([]);
     }
   };
 

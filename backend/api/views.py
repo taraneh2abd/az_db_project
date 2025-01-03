@@ -15,37 +15,37 @@ def get_oracle_connection():
 @csrf_exempt
 def test_connection(request):
     try:
-        # دریافت داده‌های ورودی
+        
         input_data = request.body.decode('utf-8')
         try:
-            parsed_data = json.loads(input_data)  # تبدیل به JSON
+            parsed_data = json.loads(input_data)  
             print(parsed_data)
         except json.JSONDecodeError:
-            parsed_data = input_data  # اگر JSON نبود، همان رشته
+            parsed_data = input_data  
 
-        # اتصال به پایگاه داده
+        
         connection = get_oracle_connection()
         cursor = connection.cursor()
 
-        # اجرای کوئری
+        
         cursor.execute("""
         SELECT Cases.case_id, Cases.case_type, Appeal.appeal_date, Appeal.reason
         FROM Cases
         LEFT JOIN Appeal ON Cases.case_id = Appeal.case_id
         """)
 
-        # دریافت اسامی ستون‌ها
+        
         column_names = [col[0] for col in cursor.description]
 
-        # دریافت رکوردها
+        
         rows = cursor.fetchall()
 
-        # تبدیل داده‌ها به فرمت JSON
+        
         data_list = []
         for row in rows:
             row_dict = {}
             for index, value in enumerate(row):
-                # مدیریت مقادیر NULL
+                
                 if isinstance(value, oracledb.LOB):
                     row_dict[column_names[index]] = value.read() if value else "N/A"
                 else:
@@ -55,7 +55,7 @@ def test_connection(request):
         cursor.close()
         connection.close()
 
-        # پاسخ‌دهی
+        
         response = {
             "data": data_list if data_list else [],
             "message": "Query executed successfully" if data_list else "No data available"
