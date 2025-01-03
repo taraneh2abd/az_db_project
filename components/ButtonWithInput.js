@@ -108,16 +108,17 @@ const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
 
               {showERD && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                  <div className="relative bg-white p-4 rounded-lg">
-                    <button
-                      className="absolute top-2 right-2 px-2 py-1 text-sm text-white bg-red-600 hover:bg-red-700 rounded"
-                      onClick={() => setShowERD(false)}
-                    >
-                      Close
-                    </button>
-                    <img src="/Final_ERD.png" alt="ERD Diagram" className="max-w-full h-auto" />
-                  </div>
-                </div>
+  <div className="relative bg-white p-4 rounded-lg w-[50%] h-[80%] flex items-center justify-center">
+    <button
+      className="absolute top-2 right-2 px-2 py-1 text-sm text-white bg-red-600 hover:bg-red-700 rounded"
+      onClick={() => setShowERD(false)}
+    >
+      Close
+    </button>
+    <img src="/Final_ERD.png" alt="ERD Diagram" className="max-w-full max-h-full" />
+  </div>
+</div>
+
               )}
             </div>
           </div>
