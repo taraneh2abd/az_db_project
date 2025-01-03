@@ -21,31 +21,46 @@ const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
     }));
   };
 
+    const formatTableData = (data) => {
+    // Replace 'N/A' with '' in the table data
+    return data.map(row =>
+      Object.fromEntries(
+        Object.entries(row).map(([key, value]) => [key, value === 'N/A' ? '' : value])
+      )
+    );
+  };
+
 const fetchApiMessage = async () => {
-  try {
-    const response = await fetch('http://127.0.0.1:8000/api/test_connection/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ...inputs,
-        buttonIndex: selectedButton,
-      }),
-    });
-    const data = await response.json();
-    
-    console.log("API Response:", data);
+    // Validate if 'person-id' is a number
+    if (inputs['person-id'] && isNaN(inputs['person-id'])) {
+      alert('person-id must be a number');
+      return;
+    }
 
-    setApiMessage(data.message);
-    setTableData(data.data || []);
-  } catch (error) {
-    console.error('Error fetching message:', error);
-    setApiMessage('Error occurred while fetching data.');
-    setTableData([]);
-  }
-};
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/test_connection/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...inputs,
+          buttonIndex: selectedButton,
+        }),
+      });
+      const data = await response.json();
 
+      console.log("API Response:", data);
+
+      setApiMessage(data.message);
+      setTableData(data.data || []);
+    } catch (error) {
+      console.error('Error fetching message:', error);
+      setApiMessage('Error occurred while fetching data.');
+      setTableData([]);
+    }
+  };
+  
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
       <button
@@ -146,7 +161,7 @@ const fetchApiMessage = async () => {
                 </thead>
                 <tbody>
                   {tableData.length > 0 ? (
-                    tableData.map((row, index) => (
+                    formatTableData(tableData).map((row, index) => (
                       <tr key={index}>
                         {Object.values(row).map((value, idx) => (
                           <td
