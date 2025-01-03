@@ -231,6 +231,11 @@ const App = () => {
         placeholders={[]}
         buttonIndex={7}
       />
+      <ButtonWithInput 
+        buttonText="8 - Show all people and their static roles (out of case)" 
+        placeholders={[]}
+        buttonIndex={8}
+      />
     </div>
   );
 };

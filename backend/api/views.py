@@ -141,6 +141,16 @@ INNER JOIN Representation r2 ON r1.lawyer_id = r2.lawyer_id
 INNER JOIN Involved_Party ON r1.lawyer_id = Involved_Party.party_id
 WHERE r1.client_id != r2.client_id
 
+""",
+8:"""
+SELECT 
+    Involved_Party.first_name,
+    Involved_Party.last_name, 
+    Role_Assignment.role, 
+    Role_Assignment.case_id
+FROM Involved_Party
+LEFT JOIN Role_Assignment ON Involved_Party.party_id = Role_Assignment.party_id
+
 """
 }
 
