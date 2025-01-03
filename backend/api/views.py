@@ -133,14 +133,15 @@ def test_connection(request):
         # انتخاب کوئری مناسب بر اساس buttonIndex
         query = QUERY_MAP[button_index]
 
-        # بررسی اینکه آیا کوئری شامل {join_condition} است
-        if "{join_condition}" in query:
-            if person_id:
-                join_condition = f"WHERE ip.party_id = {person_id}"
-            else:
-                join_condition = ""  # شرط خالی
+        # اگر person_id داده شده باشد، به کوئری شرط INNER JOIN اضافه می‌کنیم
+        if person_id:
+            join_condition = f"""
+                WHERE i.party_id = {person_id} 
+            """
             query = query.format(join_condition=join_condition)
-
+        else:
+            query = query.format(join_condition="")  # اگر person_id وجود ندارد، شرط را خالی می‌کنیم
+        
         # اگر {join_condition} وجود ندارد، مستقیماً از کوئری استفاده کنید
 
 
