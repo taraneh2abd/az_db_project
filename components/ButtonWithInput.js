@@ -7,7 +7,7 @@ const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
   const [showTable, setShowTable] = useState(false);
   const [showERD, setShowERD] = useState(false);
   const [apiMessage, setApiMessage] = useState('');
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState([]); // پیش‌فرض آرایه خالی
   const [inputs, setInputs] = useState(placeholders.reduce((acc, placeholder) => {
     acc[placeholder] = '';
     return acc;
@@ -17,7 +17,7 @@ const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
   const handleInputChange = (e, placeholder) => {
     setInputs(prevInputs => ({
       ...prevInputs,
-      [placeholder]: e.target.value
+      [placeholder]: e.target.value,
     }));
   };
 
@@ -29,15 +29,18 @@ const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...inputs, 
-          buttonIndex: selectedButton
-        })
+          ...inputs,
+          buttonIndex: selectedButton,
+        }),
       });
       const data = await response.json();
+
       setApiMessage(data.message);
-      setTableData(data.data);
+      setTableData(data.data || []); // اگر داده‌ای نبود، مقدار پیش‌فرض آرایه خالی باشد
     } catch (error) {
       console.error('Error fetching message:', error);
+      setApiMessage('Error occurred while fetching data.');
+      setTableData([]); // در صورت خطا، داده‌ها را خالی کنید
     }
   };
 
@@ -128,11 +131,15 @@ const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="bg-white text-indigo-700">
-                    {tableData.length > 0 && Object.keys(tableData[0]).map((key, index) => (
-                      <th key={index} className="px-4 py-2 border border-indigo-700 text-center">
-                        {key.charAt(0).toUpperCase() + key.slice(1)}
-                      </th>
-                    ))}
+                    {tableData.length > 0 &&
+                      Object.keys(tableData[0]).map((key, index) => (
+                        <th
+                          key={index}
+                          className="px-4 py-2 border border-indigo-700 text-center"
+                        >
+                          {key.charAt(0).toUpperCase() + key.slice(1)}
+                        </th>
+                      ))}
                   </tr>
                 </thead>
                 <tbody>
@@ -140,7 +147,10 @@ const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
                     tableData.map((row, index) => (
                       <tr key={index}>
                         {Object.values(row).map((value, idx) => (
-                          <td key={idx} className="px-4 py-2 border border-indigo-700 text-center">
+                          <td
+                            key={idx}
+                            className="px-4 py-2 border border-indigo-700 text-center"
+                          >
                             {value}
                           </td>
                         ))}
@@ -148,7 +158,10 @@ const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="100%" className="px-4 py-2 border border-indigo-700 text-center">
+                      <td
+                        colSpan="100%"
+                        className="px-4 py-2 border border-indigo-700 text-center"
+                      >
                         No data available
                       </td>
                     </tr>
