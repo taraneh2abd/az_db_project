@@ -217,8 +217,8 @@ const App = () => {
         buttonIndex={4}
       />
       <ButtonWithInput 
-        buttonText="Show All Appeals of a Court Branch between 2 Dates" 
-        placeholders={["Court-branch-id", "Start-Date","End-Date"]}
+        buttonText="Count all couples that have been in a case" 
+        placeholders={[]}
         buttonIndex={5}
       />
     </div>
