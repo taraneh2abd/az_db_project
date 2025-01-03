@@ -21,28 +21,30 @@ const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
     }));
   };
 
-  const fetchApiMessage = async () => {
-    try {
-      const response = await fetch('http://127.0.0.1:8000/api/test_connection/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...inputs,
-          buttonIndex: selectedButton,
-        }),
-      });
-      const data = await response.json();
+const fetchApiMessage = async () => {
+  try {
+    const response = await fetch('http://127.0.0.1:8000/api/test_connection/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...inputs,
+        buttonIndex: selectedButton,
+      }),
+    });
+    const data = await response.json();
+    
+    console.log("API Response:", data);
 
-      setApiMessage(data.message);
-      setTableData(data.data || []);
-    } catch (error) {
-      console.error('Error fetching message:', error);
-      setApiMessage('Error occurred while fetching data.');
-      setTableData([]);
-    }
-  };
+    setApiMessage(data.message);
+    setTableData(data.data || []);
+  } catch (error) {
+    console.error('Error fetching message:', error);
+    setApiMessage('Error occurred while fetching data.');
+    setTableData([]);
+  }
+};
 
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
@@ -180,8 +182,8 @@ const App = () => {
   return (
     <div className="space-y-6">
       <ButtonWithInput 
-        buttonText="Show all Evidence of all Case which these 4 persons were involved" 
-        placeholders={["person-id (defendant)", "Person-id (plaintiff)", "Lawyer-id", "Judge-id"]}
+        buttonText="Show all Cases and their Appeal details" 
+        placeholders={["person-id"]}
         buttonIndex={1}
       />
       <ButtonWithInput 

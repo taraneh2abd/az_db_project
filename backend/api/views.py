@@ -14,10 +14,10 @@ def get_oracle_connection():
 
 QUERY_MAP = {
     1: """
-        SELECT Cases.case_id, Cases.case_type, Case.description, Appeal.appeal_date, Appeal.reason
+        SELECT Cases.case_id, Cases.case_type, Cases.description, Appeal.appeal_date, Appeal.reason
         FROM Cases
-        LEFT JOIN Appeal ON Cases.case_id = Appeal.case_id;
-
+        LEFT JOIN Appeal ON Cases.case_id = Appeal.case_id
+        {join_condition}
     """,
     2: """
         SELECT Cases.case_id, Cases.case_type, Cases.description, Appeal.appeal_date, Appeal.reason
@@ -54,13 +54,29 @@ def test_connection(request):
         # دریافت داده‌های ورودی از فرانت
         input_data = request.body.decode('utf-8')
         parsed_data = json.loads(input_data)
+        print("Received input from front-end:", parsed_data)  # چاپ ورودی دریافت شده
 
-        # استخراج buttonIndex از ورودی
         button_index = parsed_data.get("buttonIndex", None)
+        person_id = parsed_data.get("person_id", None)
+
         if button_index not in QUERY_MAP:
             return JsonResponse({"error": "Invalid buttonIndex provided."}, status=400)
 
         query = QUERY_MAP[button_index]
+
+        # اگر person_id داده شده باشد، به کوئری شرط INNER JOIN اضافه می‌کنیم
+        if button_index == 1 and person_id:
+            try:
+                person_id = int(person_id)  # تبدیل به عدد
+                join_condition = f"""
+                    INNER JOIN Writes ON Cases.case_id = Writes.case_id
+                    WHERE Writes.writer_id = {person_id}
+                """
+                query = query.format(join_condition=join_condition)
+            except ValueError:
+                return JsonResponse({"error": "Invalid person_id format. It must be an integer."}, status=400)
+        else:
+            query = query.format(join_condition="")  # اگر person_id وجود ندارد، شرط را خالی می‌کنیم
 
         # اتصال به دیتابیس
         connection = get_oracle_connection()
