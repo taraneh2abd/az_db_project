@@ -15,36 +15,94 @@ def get_oracle_connection():
 # دیکشنری کوئری‌ها بر اساس دکمه فشرده شده
 QUERY_MAP = {
     1: """
-        SELECT Cases.case_id, Cases.case_type, Cases.description, Appeal.appeal_date, Appeal.reason
-        FROM Cases
-        LEFT JOIN Appeal ON Cases.case_id = Appeal.case_id
+        SELECT 
+            i.party_id AS involved_party_id,
+            i.first_name AS involved_party_first_name,
+            i.last_name AS involved_party_last_name,
+            c.case_id,
+            c.case_type,
+            c.description,
+            a.appeal_date,
+            a.reason
+        FROM 
+            Involved_Party i
+        INNER JOIN 
+            Writes w ON i.party_id = w.writer_id
+        INNER JOIN 
+            Appeal a ON w.case_id = a.case_id AND w.appeal_date = a.appeal_date
+        RIGHT JOIN 
+            Cases c ON w.case_id = c.case_id
         {join_condition}
     """,
     2: """
-        SELECT Cases.case_id, Cases.case_type, Cases.description, Appeal.appeal_date, Appeal.reason
-        FROM Cases
-        LEFT JOIN Appeal ON Cases.case_id = Appeal.case_id
+        SELECT 
+            i.party_id AS involved_party_id,
+            i.first_name AS involved_party_first_name,
+            i.last_name AS involved_party_last_name,
+            c.case_id,
+            c.case_type,
+            c.description,
+            a.appeal_date,
+            a.reason,
+            w.writer_id
+        FROM 
+            Involved_Party i
+        INNER JOIN 
+            Writes w ON i.party_id = w.writer_id
+        INNER JOIN 
+            Appeal a ON w.case_id = a.case_id AND w.appeal_date = a.appeal_date
+        INNER JOIN 
+            Cases c ON w.case_id = c.case_id
     """,
     3: """
-        SELECT Appeal.case_id, Appeal.appeal_date, Appeal.reason, Cases.case_type
-        FROM Appeal
-        RIGHT JOIN Cases ON Appeal.case_id = Cases.case_id
+        SELECT 
+            i.party_id AS involved_party_id,
+            i.first_name AS involved_party_first_name,
+            i.last_name AS involved_party_last_name,
+            a.case_id,
+            a.appeal_date,
+            a.reason,
+            c.case_type
+        FROM 
+            Appeal a
+        RIGHT JOIN 
+            Cases c ON a.case_id = c.case_id
+        INNER JOIN 
+            Writes w ON a.case_id = w.case_id
+        INNER JOIN 
+            Involved_Party i ON w.writer_id = i.party_id
     """,
     4: """
-        SELECT p1.first_name AS party_1_first_name, p1.last_name AS party_1_last_name,
-               p2.first_name AS party_2_first_name, p2.last_name AS party_2_last_name, 
-               c.case_id, c.case_type
-        FROM Involved_Party p1
-        INNER JOIN Role_Assignment r1 ON p1.party_id = r1.party_id
-        INNER JOIN Cases c ON r1.case_id = c.case_id
-        INNER JOIN Role_Assignment r2 ON c.case_id = r2.case_id
-        INNER JOIN Involved_Party p2 ON r2.party_id = p2.party_id
-        WHERE p1.party_id != p2.party_id
+        SELECT 
+            i.party_id AS involved_party_id,
+            i.first_name AS involved_party_first_name,
+            i.last_name AS involved_party_last_name,
+            c.case_id,
+            c.case_type
+        FROM 
+            Involved_Party i
+        INNER JOIN 
+            Role_Assignment r1 ON i.party_id = r1.party_id
+        INNER JOIN 
+            Cases c ON r1.case_id = c.case_id
+        INNER JOIN 
+            Role_Assignment r2 ON c.case_id = r2.case_id
+        INNER JOIN 
+            Involved_Party p2 ON r2.party_id = p2.party_id
+        WHERE 
+            i.party_id != p2.party_id
     """,
     5: """
-        SELECT Involved_Party.first_name, Involved_Party.last_name, Role_Assignment.role, Role_Assignment.case_id
-        FROM Involved_Party
-        LEFT JOIN Role_Assignment ON Involved_Party.party_id = Role_Assignment.party_id
+        SELECT 
+            i.party_id AS involved_party_id,
+            i.first_name AS involved_party_first_name,
+            i.last_name AS involved_party_last_name,
+            r.role,
+            r.case_id
+        FROM 
+            Involved_Party i
+        LEFT JOIN 
+            Role_Assignment r ON i.party_id = r.party_id
     """
 }
 
@@ -78,8 +136,7 @@ def test_connection(request):
         # اگر person_id داده شده باشد، به کوئری شرط INNER JOIN اضافه می‌کنیم
         if person_id:
             join_condition = f"""
-                INNER JOIN Writes ON Cases.case_id = Writes.case_id
-                WHERE Writes.writer_id = {person_id}
+                WHERE i.party_id = {person_id} 
             """
             query = query.format(join_condition=join_condition)
         else:
