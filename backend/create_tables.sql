@@ -189,6 +189,12 @@ CREATE TABLE Case_Referral (
     FOREIGN KEY (referred_case_id) REFERENCES Cases(case_id)
 );
 
+
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+
+
 -- Delete all records from all tables to prevent duplication
 DELETE FROM Representing_What;
 DELETE FROM Writes;
