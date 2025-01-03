@@ -151,6 +151,22 @@ SELECT
 FROM Involved_Party
 LEFT JOIN Role_Assignment ON Involved_Party.party_id = Role_Assignment.party_id
 
+""",
+9:"""
+SELECT 
+    c1.case_id AS referring_case_id,
+    c1.case_type AS referring_case_type,
+    c1.status AS referring_case_status,
+    c2.case_id AS referred_case_id,
+    c2.case_type AS referred_case_type,
+    c2.status AS referred_case_status,
+    cr.referral_date
+FROM 
+    Case_Referral cr
+INNER JOIN 
+    Cases c1 ON cr.referring_case_id = c1.case_id
+INNER JOIN 
+    Cases c2 ON cr.referred_case_id = c2.case_id
 """
 }
 

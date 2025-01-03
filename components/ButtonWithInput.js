@@ -236,6 +236,11 @@ const App = () => {
         placeholders={[]}
         buttonIndex={8}
       />
+      <ButtonWithInput 
+        buttonText="9 - Show all REFERRED cases" 
+        placeholders={[]}
+        buttonIndex={9}
+      />
     </div>
   );
 };
