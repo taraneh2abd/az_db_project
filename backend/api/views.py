@@ -121,18 +121,25 @@ GROUP BY
 
     """,
     6: """
-SELECT Evidence.case_id, Evidence.description, Evidence.evidence_type, Evidence.date_submitted, 
+SELECT Evidence.case_id, 
+    Evidence.description, 
+    Evidence.evidence_type, 
+    Evidence.date_submitted, 
        Involved_Party.first_name, Involved_Party.last_name
 FROM Evidence
 FULL OUTER JOIN Person_Evidence_Relation ON Evidence.case_id = Person_Evidence_Relation.evidence_id
 FULL OUTER JOIN Involved_Party ON Person_Evidence_Relation.person_id = Involved_Party.party_id
     """,
     7:"""
-SELECT r1.client_id AS plaintiff_client_id, r2.client_id AS defendant_client_id, r1.lawyer_id, Involved_Party.first_name AS lawyer_first_name, Involved_Party.last_name AS lawyer_last_name
+SELECT 
+    r1.client_id AS plaintiff_client_id, 
+    r2.client_id AS defendant_client_id, 
+    r1.lawyer_id, Involved_Party.first_name AS lawyer_first_name,
+    Involved_Party.last_name AS lawyer_last_name
 FROM Representation r1
 INNER JOIN Representation r2 ON r1.lawyer_id = r2.lawyer_id
 INNER JOIN Involved_Party ON r1.lawyer_id = Involved_Party.party_id
-WHERE r1.client_id != r2.client_id;
+WHERE r1.client_id != r2.client_id
 
 """
 }

@@ -197,37 +197,37 @@ const App = () => {
   return (
     <div className="space-y-6">
       <ButtonWithInput 
-        buttonText="Show all (Appeal) of a person (can be empty)" 
+        buttonText="1 - Show all (Appeal) of a person (can be empty)" 
         placeholders={["person-id"]}
         buttonIndex={1}
       />
       <ButtonWithInput 
-        buttonText="Show All Sessions of a Court Branch between 2 Dates" 
+        buttonText="2 - Show All Sessions of a Court Branch between 2 Dates" 
         placeholders={["Court-branch-id", "Start-Date: 2024-12-31","End-Date: 2024-12-31"]}
         buttonIndex={2}
       />
       <ButtonWithInput 
-        buttonText="Show Juridical History of a Person (verdict and cases)" 
+        buttonText="3 - Show Juridical History of a Person (verdict and cases)" 
         placeholders={["Person-id (also you can inject here)"]}
         buttonIndex={3}
       />
       <ButtonWithInput 
-        buttonText="Show all couples that have been in a case and their roles" 
+        buttonText="4 - Show all couples that have been in a case and their roles" 
         placeholders={[]}
         buttonIndex={4}
       />
       <ButtonWithInput 
-        buttonText="Count all couples that have been in a case" 
+        buttonText="5 - Count all couples that have been in a case" 
         placeholders={[]}
         buttonIndex={5}
       />
       <ButtonWithInput 
-        buttonText="" 
+        buttonText="6 - " 
         placeholders={[]}
         buttonIndex={6}
       />
       <ButtonWithInput 
-        buttonText="" 
+        buttonText="7 - Show lawyers who represent both the plaintiff and the defendant" 
         placeholders={[]}
         buttonIndex={7}
       />
