@@ -222,7 +222,7 @@ const App = () => {
         buttonIndex={5}
       />
       <ButtonWithInput 
-        buttonText="6 - " 
+        buttonText="6 - show all evidences (case can be empty/not created OR Involved_Party may be missing)" 
         placeholders={[]}
         buttonIndex={6}
       />

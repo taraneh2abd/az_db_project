@@ -121,14 +121,16 @@ GROUP BY
 
     """,
     6: """
-SELECT Evidence.case_id, 
-    Evidence.description, 
-    Evidence.evidence_type, 
-    Evidence.date_submitted, 
-       Involved_Party.first_name, Involved_Party.last_name
+SELECT *
+    -- Evidence.case_id, 
+    -- Evidence.description, 
+    -- Evidence.evidence_type, 
+    -- Evidence.date_submitted, 
+    -- Involved_Party.first_name,
+    -- Involved_Party.last_name
 FROM Evidence
-FULL OUTER JOIN Person_Evidence_Relation ON Evidence.case_id = Person_Evidence_Relation.evidence_id
-FULL OUTER JOIN Involved_Party ON Person_Evidence_Relation.person_id = Involved_Party.party_id
+ FULL OUTER JOIN Person_Evidence_Relation ON Evidence.case_id = Person_Evidence_Relation.evidence_id
+ FULL OUTER JOIN Involved_Party ON Person_Evidence_Relation.person_id = Involved_Party.party_id
     """,
     7:"""
 SELECT 
