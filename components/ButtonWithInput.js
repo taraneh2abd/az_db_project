@@ -221,6 +221,16 @@ const App = () => {
         placeholders={[]}
         buttonIndex={5}
       />
+      <ButtonWithInput 
+        buttonText="" 
+        placeholders={[]}
+        buttonIndex={6}
+      />
+      <ButtonWithInput 
+        buttonText="" 
+        placeholders={[]}
+        buttonIndex={7}
+      />
     </div>
   );
 };
