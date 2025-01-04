@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { docco } from 'react-syntax-highlighter/dist/esm/styles/prism';
+// import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+// import { docco } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -87,38 +87,93 @@ const fetchApiMessage = async () => {
       </button>
 
       {isOpen && (
-        <div className="mt-4 w-[1200px] bg-gray-100 p-4 rounded-2xl">
-          <div className="flex mt-4">
-            <div className="w-[1000px] bg-gray-100 p-4 rounded-2xl">
-              <div className="space-y-2">
-                {placeholders.map((placeholder, index) => (
-                  <input
-                    key={index}
-                    type="text"
-                    value={inputs[placeholder]}
-                    onChange={(e) => handleInputChange(e, placeholder)}
-                    placeholder={placeholder}
-                    className="w-full px-4 py-2 border rounded-lg text-gray-600"
-                  />
+  <div className="mt-4 w-[1200px] bg-gray-100 p-4 rounded-2xl">
+    <div className="flex mt-4">
+      <div className="w-[1000px] bg-gray-100 p-4 rounded-2xl">
+        <div className="space-y-4">
+          {/* Conditional Rendering Based on buttonIndex */}
+          {buttonIndex === 2 ? (
+            // Court Dropdown and Date Inputs for buttonIndex 2
+            <>
+              <select
+                value={inputs.courtBranchName || ""}
+                onChange={(e) => handleInputChange(e, "courtBranchName")}
+                className="w-full px-4 py-2 border rounded-lg text-gray-600"
+              >
+                <option value="" disabled>
+                  Select Court Branch Name
+                </option>
+                {[
+                  "Central Court",
+                  "North District Court",
+                  "South District Court",
+                  "East District Court",
+                  "Main Street Court",
+                  "High Court",
+                  "Regional Court",
+                  "City Hall Court",
+                  "State Court",
+                  "Southern Court",
+                  "Lakeside Court",
+                  "Northern Court",
+                  "West City Court",
+                ].map((name, index) => (
+                  <option key={index} value={name}>
+                    {name}
+                  </option>
                 ))}
-              </div>
-              <div className="flex justify-center mt-4">
-                <button
-                  className="w-[200px] px-6 py-2 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl"
-                  onClick={() => {
-                    setShowTable(true);
-                    fetchApiMessage();
-                  }}
-                >
-                  Apply
-                </button>
-              </div>
-            </div>
+              </select>
+
+              <input
+                type="date"
+                value={inputs.startDate || ""}
+                onChange={(e) => handleInputChange(e, "startDate")}
+                placeholder="Start Date"
+                className="w-full px-4 py-2 border rounded-lg text-gray-600"
+              />
+              <input
+                type="date"
+                value={inputs.endDate || ""}
+                onChange={(e) => handleInputChange(e, "endDate")}
+                placeholder="End Date"
+                className="w-full px-4 py-2 border rounded-lg text-gray-600"
+              />
+            </>
+          ) : (
+            // Regular Input Fields for Other buttonIndex
+            <>
+              {placeholders.map((placeholder, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  value={inputs[placeholder]}
+                  onChange={(e) => handleInputChange(e, placeholder)}
+                  placeholder={placeholder}
+                  className="w-full px-4 py-2 border rounded-lg text-gray-600"
+                />
+              ))}
+            </>
+          )}
+        </div>
+
+        {/* Apply Button */}
+        <div className="flex justify-center mt-4">
+          <button
+            className="w-[200px] px-6 py-2 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl"
+            onClick={() => {
+              setShowTable(true);
+              fetchApiMessage();
+            }}
+          >
+            Apply
+          </button>
+        </div>
+      </div>
 
             <div className="relative ml-4 w-[1000px] bg-gray-300 p-4 rounded-2xl overflow-auto max-h-[400px]">
-              <SyntaxHighlighter language="sql" style={docco}>
+              {/* <SyntaxHighlighter language="sql" style={docco}> */}
               {apiMessage}
-              </SyntaxHighlighter>
+              {/* </SyntaxHighlighter> */}
               <button
                 className="absolute top-4 right-4 px-4 py-2 text-white bg-indigo-700 hover:bg-indigo-800 rounded-lg"
                 onClick={() => setShowERD(true)}
