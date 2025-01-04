@@ -147,3 +147,17 @@ LEFT JOIN
     Verdict v ON c.case_id = v.case_id
 
                 WHERE i.party_id = 1
+
+SELECT *
+FROM Court_Session
+WHERE
+
+              session_date BETWEEN 2003-01-17 AND 2027-10-30
+              AND court_name = 'High Court'
+
+SELECT *
+FROM Court_Session
+WHERE 
+    session_date BETWEEN TO_DATE('2003-01-17', 'YYYY-MM-DD') 
+    AND TO_DATE('2027-10-30', 'YYYY-MM-DD')
+    AND court_name = 'High Court'

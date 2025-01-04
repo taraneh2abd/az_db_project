@@ -187,7 +187,7 @@ def test_connection(request):
         person_id = parsed_data.get("person-id", None)  # مطمئن می‌شویم که کلید درست است
         person_id3 = parsed_data.get("Person-id (also you can inject here)", None)  # مطمئن می‌شویم که کلید درست است
         courtBranchName = parsed_data.get("courtBranchName", None)  # مطمئن می‌شویم که کلید درست است
-        EndDate= parsed_data.get("EndDate", None)  # مطمئن می‌شویم که کلید درست است
+        EndDate= parsed_data.get("endDate", None)  # مطمئن می‌شویم که کلید درست است
         StartDate= parsed_data.get("startDate", None)  # مطمئن می‌شویم که کلید درست است
         
 
@@ -221,8 +221,9 @@ def test_connection(request):
             query = query.format(join_condition=join_condition)
         elif courtBranchName:
             join_condition = f"""
-              session_date BETWEEN {StartDate} AND {EndDate}
-              AND court_name = '{courtBranchName}'
+            session_date BETWEEN TO_DATE('{StartDate}', 'YYYY-MM-DD') 
+            AND TO_DATE('{EndDate}', 'YYYY-MM-DD')
+            AND court_name = '{courtBranchName}'
             """
             query = query.format(join_condition=join_condition)
         else:
