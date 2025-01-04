@@ -282,7 +282,7 @@ const App = () => {
         buttonIndex={6}
       />
       <ButtonWithInput 
-        buttonText="7 - Show lawyers who represent both the plaintiff and the defendant" 
+        buttonText="7 - Show lawyers, plaintif and defendant of special complaint and the related case" 
         placeholders={[]}
         buttonIndex={7}
       />

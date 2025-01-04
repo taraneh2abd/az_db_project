@@ -114,15 +114,33 @@ FROM Evidence
  FULL OUTER JOIN Involved_Party ON Person_Evidence_Relation.person_id = Involved_Party.party_id
     """,
     7:"""
-SELECT 
-    r1.client_id AS plaintiff_client_id, 
-    r2.client_id AS defendant_client_id, 
-    r1.lawyer_id, Involved_Party.first_name AS lawyer_first_name,
-    Involved_Party.last_name AS lawyer_last_name
-FROM Representation r1
-INNER JOIN Representation r2 ON r1.lawyer_id = r2.lawyer_id
-INNER JOIN Involved_Party ON r1.lawyer_id = Involved_Party.party_id
-WHERE r1.client_id != r2.client_id
+
+SELECT
+    Complaint.case_id,
+    Plaintiff.first_name AS plaintiff_first_name,
+    Plaintiff.last_name AS plaintiff_last_name,
+    Defendant.first_name AS defendant_first_name,
+    Defendant.last_name AS defendant_last_name,
+    Cases.case_type,
+    Lawyer.first_name AS lawyer_first_name,
+    Lawyer.last_name AS lawyer_last_name,
+    Representation.start_date AS representation_start_date,
+    Representation.end_date AS representation_end_date
+FROM
+    Complaint
+JOIN Involved_Party Plaintiff
+    ON Complaint.plaintiff_id = Plaintiff.party_id
+JOIN Involved_Party Defendant
+    ON Complaint.defendant_id = Defendant.party_id
+JOIN Cases
+    ON Complaint.case_id = Cases.case_id
+JOIN Representation
+    ON (Representation.client_id = Complaint.plaintiff_id
+        OR Representation.client_id = Complaint.defendant_id)
+JOIN Involved_Party Lawyer
+    ON Representation.lawyer_id = Lawyer.party_id
+ORDER BY
+    Complaint.case_id
 """,
 8:"""
 SELECT 
@@ -148,6 +166,14 @@ INNER JOIN
     Cases c1 ON cr.referring_case_id = c1.case_id
 INNER JOIN 
     Cases c2 ON cr.referred_case_id = c2.case_id
+""",
+10:"""
+SELECT Complaint.case_id, 
+       ip1.first_name AS plaintiff_first_name, ip1.last_name AS plaintiff_last_name,
+       ip2.first_name AS defendant_first_name, ip2.last_name AS defendant_last_name
+FROM Complaint
+INNER JOIN Involved_Party ip1 ON Complaint.plaintiff_id = ip1.party_id
+INNER JOIN Involved_Party ip2 ON Complaint.defendant_id = ip2.party_id
 """
 }
 
