@@ -85,3 +85,10 @@ FROM Representation r1
 INNER JOIN Representation r2 ON r1.lawyer_id = r2.lawyer_id
 INNER JOIN Involved_Party ON r1.lawyer_id = Involved_Party.party_id
 WHERE r1.client_id != r2.client_id;
+
+
+SELECT *
+FROM Court_Session
+WHERE 
+  session_date BETWEEN TO_DATE('2000-12-31', 'YYYY-MM-DD') AND TO_DATE('2025-12-31', 'YYYY-MM-DD')
+  AND court_name = 'Central Court';

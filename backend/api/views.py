@@ -33,24 +33,12 @@ QUERY_MAP = {
         {join_condition}
     """,
     2: """
-        SELECT 
-            i.party_id AS involved_party_id,
-            i.first_name AS involved_party_first_name,
-            i.last_name AS involved_party_last_name,
-            c.case_id,
-            c.case_type,
-            c.description,
-            a.appeal_date,
-            a.reason,
-            w.writer_id
-        FROM 
-            Involved_Party i
-        INNER JOIN 
-            Writes w ON i.party_id = w.writer_id
-        INNER JOIN 
-            Appeal a ON w.case_id = a.case_id AND w.appeal_date = a.appeal_date
-        INNER JOIN 
-            Cases c ON w.case_id = c.case_id
+SELECT *
+FROM Court_Session
+WHERE 
+  session_date BETWEEN TO_DATE('2000-12-31', 'YYYY-MM-DD') AND TO_DATE('2025-12-31', 'YYYY-MM-DD')
+  AND court_name = 'Central Court'
+
     """,
     3: """
 SELECT 
