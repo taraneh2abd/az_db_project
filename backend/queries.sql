@@ -92,3 +92,36 @@ FROM Court_Session
 WHERE 
   session_date BETWEEN TO_DATE('2000-12-31', 'YYYY-MM-DD') AND TO_DATE('2025-12-31', 'YYYY-MM-DD')
   AND court_name = 'Central Court';
+
+
+
+DELIMITER $$
+
+CREATE PROCEDURE RegisterComplaint(
+    IN p_case_id INT,
+    IN p_plaintiff_id INT,
+    IN p_defendant_id INT,
+    IN p_complaint_date DATE,
+    IN p_description TEXT,
+    IN p_case_type VARCHAR(50),
+    IN p_status VARCHAR(50)
+)
+BEGIN
+    DECLARE v_status VARCHAR(50);
+    
+    INSERT INTO Complaint(case_id, plaintiff_id, defendant_id, complaint_date, description)
+    VALUES (p_case_id, p_plaintiff_id, p_defendant_id, p_complaint_date, p_description);
+    
+    INSERT INTO Accuses(party_id, complaint_id, role)
+    VALUES (p_plaintiff_id, p_case_id, 'Accuser'),
+           (p_defendant_id, p_case_id, 'Accused');
+    
+    UPDATE Cases
+    SET case_type = p_case_type, status = p_status
+    WHERE case_id = p_case_id;
+
+    SELECT * FROM Cases WHERE case_id = p_case_id;
+    
+END$$
+
+DELIMITER ;
