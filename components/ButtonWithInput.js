@@ -262,7 +262,7 @@ const App = () => {
         buttonIndex={2}
       />
       <ButtonWithInput 
-        buttonText="3 - Show Juridical History of a Person (verdict and cases)" 
+        buttonText="3 - Show Juridical History of a Person (verdict and cases) --- 1 OR 1=1 ---" 
         placeholders={["Person-id (also you can inject here)"]}
         buttonIndex={3}
       />
