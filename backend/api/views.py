@@ -33,9 +33,7 @@ QUERY_MAP = {
 SELECT *
 FROM Court_Session
 WHERE 
-  session_date BETWEEN {start_date} AND {end_date}
-  AND court_name = '{court_name}'
-
+{join_condition}
     """,
     3: """
 SELECT 
@@ -56,6 +54,7 @@ INNER JOIN
     Cases c ON ra.case_id = c.case_id
 LEFT JOIN 
     Verdict v ON c.case_id = v.case_id
+{join_condition}
     """,
     4: """
 SELECT 
@@ -186,7 +185,17 @@ def test_connection(request):
         print("Received input from front-end:", parsed_data)  # چاپ ورودی دریافت شده
         button_index = parsed_data.get("buttonIndex", None)
         person_id = parsed_data.get("person-id", None)  # مطمئن می‌شویم که کلید درست است
-        # بررسی که person_id داده شده باشد و تبدیل به عدد
+        person_id3 = parsed_data.get("Person-id (also you can inject here)", None)  # مطمئن می‌شویم که کلید درست است
+        courtBranchName = parsed_data.get("courtBranchName", None)  # مطمئن می‌شویم که کلید درست است
+        EndDate= parsed_data.get("EndDate", None)  # مطمئن می‌شویم که کلید درست است
+        StartDate= parsed_data.get("startDate", None)  # مطمئن می‌شویم که کلید درست است
+        
+
+
+
+
+
+
         if person_id:
             try:
                 person_id = int(person_id)  # تبدیل person_id به عدد
@@ -205,10 +214,25 @@ def test_connection(request):
                 WHERE i.party_id = {person_id} 
             """
             query = query.format(join_condition=join_condition)
+        elif person_id3:
+            join_condition = f"""
+                WHERE ip.party_id = {person_id3} 
+            """
+            query = query.format(join_condition=join_condition)
+        elif courtBranchName:
+            join_condition = f"""
+              session_date BETWEEN {StartDate} AND {EndDate}
+              AND court_name = '{courtBranchName}'
+            """
+            query = query.format(join_condition=join_condition)
         else:
-            query = query.format(join_condition="")  # اگر person_id وجود ندارد، شرط را خالی می‌کنیم
-        # اگر {join_condition} وجود ندارد، مستقیماً از کوئری استفاده کنید
-        # اتصال به دیتابیس
+            query = query.format(join_condition="")  
+
+
+        print()
+        print(query)
+        print()
+
         connection = get_oracle_connection()
         cursor = connection.cursor()
         # اجرای کوئری
@@ -228,10 +252,9 @@ def test_connection(request):
         # بستن اتصال به دیتابیس
         cursor.close()
         connection.close()
-        # پاسخ با داده‌ها و متن کوئری
         response = {
             "data": data_list if data_list else [],
-            "message": query.strip()  # پیام حاوی کوئری اجرا شده
+            "message": query.strip() if query else "No query provided"  # در صورتی که query مقدار نداشته باشد
         }
         return JsonResponse(response, safe=False)
     except Exception as e:

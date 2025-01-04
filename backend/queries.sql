@@ -125,3 +125,25 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+SELECT
+    ip.party_id AS involved_party_id,
+    ip.first_name AS involved_party_first_name,
+    ip.last_name AS involved_party_last_name,
+    c.case_id,
+    c.case_type,
+    c.description,
+    v.date_issued AS verdict_date,
+    v.verdict_type,
+    v.summary AS verdict_summary
+FROM
+    Involved_Party ip
+INNER JOIN
+    Role_Assignment ra ON ip.party_id = ra.party_id
+INNER JOIN
+    Cases c ON ra.case_id = c.case_id
+LEFT JOIN
+    Verdict v ON c.case_id = v.case_id
+
+                WHERE i.party_id = 1
