@@ -1,6 +1,6 @@
 import { useState } from 'react';
-// import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-// import { docco } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { docco } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const ButtonWithInput = ({ buttonText, placeholders, buttonIndex }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -156,7 +156,6 @@ const fetchApiMessage = async () => {
           )}
         </div>
 
-        {/* Apply Button */}
         <div className="flex justify-center mt-4">
           <button
             className="w-[200px] px-6 py-2 text-lg text-white bg-indigo-700 hover:bg-indigo-800 rounded-2xl"
@@ -171,9 +170,9 @@ const fetchApiMessage = async () => {
       </div>
 
             <div className="relative ml-4 w-[1000px] bg-gray-300 p-4 rounded-2xl overflow-auto max-h-[400px]">
-              {/* <SyntaxHighlighter language="sql" style={docco}> */}
+              <SyntaxHighlighter language="sql" style={docco}>
               {apiMessage}
-              {/* </SyntaxHighlighter> */}
+              </SyntaxHighlighter>
               <button
                 className="absolute top-4 right-4 px-4 py-2 text-white bg-indigo-700 hover:bg-indigo-800 rounded-lg"
                 onClick={() => setShowERD(true)}

@@ -2,14 +2,14 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import oracledb
 import json
-# اطلاعات اتصال به دیتابیس
+
 DB_USER = "neo"
 DB_PASSWORD = "trinity123"
 DB_DSN = "localhost:1521/THEMATRIX"
-# اتصال به دیتابیس اوراکل
+
 def get_oracle_connection():
     return oracledb.connect(user=DB_USER, password=DB_PASSWORD, dsn=DB_DSN)
-# دیکشنری کوئری‌ها بر اساس دکمه فشرده شده
+
 QUERY_MAP = {
     1: """
         SELECT 
@@ -179,16 +179,16 @@ INNER JOIN Involved_Party ip2 ON Complaint.defendant_id = ip2.party_id
 @csrf_exempt
 def test_connection(request):
     try:
-        # دریافت داده‌های ورودی از فرانت
+        
         input_data = request.body.decode('utf-8')
         parsed_data = json.loads(input_data)
-        print("Received input from front-end:", parsed_data)  # چاپ ورودی دریافت شده
+        print("Received input from front-end:", parsed_data)  
         button_index = parsed_data.get("buttonIndex", None)
-        person_id = parsed_data.get("person-id", None)  # مطمئن می‌شویم که کلید درست است
-        person_id3 = parsed_data.get("Person-id (also you can inject here)", None)  # مطمئن می‌شویم که کلید درست است
-        courtBranchName = parsed_data.get("courtBranchName", None)  # مطمئن می‌شویم که کلید درست است
-        EndDate= parsed_data.get("endDate", None)  # مطمئن می‌شویم که کلید درست است
-        StartDate= parsed_data.get("startDate", None)  # مطمئن می‌شویم که کلید درست است
+        person_id = parsed_data.get("person-id", None)  
+        person_id3 = parsed_data.get("Person-id (also you can inject here)", None)  
+        courtBranchName = parsed_data.get("courtBranchName", None)  
+        EndDate= parsed_data.get("endDate", None)  
+        StartDate= parsed_data.get("startDate", None)  
         
 
 
@@ -198,32 +198,32 @@ def test_connection(request):
 
         if person_id:
             try:
-                person_id = int(person_id)  # تبدیل person_id به عدد
+                person_id = int(person_id)  
             except ValueError:
                 return JsonResponse({"error": "Invalid person_id format. It must be an integer."}, status=400)
         else:
-            person_id = None  # اگر person_id خالی باشد، به None تبدیل می‌شود
-        # بررسی اینکه آیا buttonIndex معتبر است
+            person_id = None  
+        
         if button_index not in QUERY_MAP:
             return JsonResponse({"error": "Invalid buttonIndex provided."}, status=400)
-        # انتخاب کوئری مناسب بر اساس buttonIndex
+        
         query = QUERY_MAP[button_index]
-        # اگر person_id داده شده باشد، به کوئری شرط INNER JOIN اضافه می‌کنیم
+        
         if person_id:
             join_condition = f"""
-                WHERE i.party_id = {person_id} 
+WHERE i.party_id = {person_id} 
             """
             query = query.format(join_condition=join_condition)
         elif person_id3:
             join_condition = f"""
-                WHERE ip.party_id = {person_id3} 
+WHERE ip.party_id = {person_id3} 
             """
             query = query.format(join_condition=join_condition)
         elif courtBranchName:
             join_condition = f"""
-            session_date BETWEEN TO_DATE('{StartDate}', 'YYYY-MM-DD') 
-            AND TO_DATE('{EndDate}', 'YYYY-MM-DD')
-            AND court_name = '{courtBranchName}'
+session_date BETWEEN TO_DATE('{StartDate}', 'YYYY-MM-DD') 
+AND TO_DATE('{EndDate}', 'YYYY-MM-DD')
+AND court_name = '{courtBranchName}'
             """
             query = query.format(join_condition=join_condition)
         else:
@@ -236,11 +236,11 @@ def test_connection(request):
 
         connection = get_oracle_connection()
         cursor = connection.cursor()
-        # اجرای کوئری
+        
         cursor.execute(query)
         column_names = [col[0] for col in cursor.description]
         rows = cursor.fetchall()
-        # تبدیل نتایج به فرمت JSON
+        
         data_list = []
         for row in rows:
             row_dict = {}
@@ -250,12 +250,12 @@ def test_connection(request):
                 else:
                     row_dict[column_names[index]] = value if value is not None else "N/A"
             data_list.append(row_dict)
-        # بستن اتصال به دیتابیس
+        
         cursor.close()
         connection.close()
         response = {
             "data": data_list if data_list else [],
-            "message": query.strip() if query else "No query provided"  # در صورتی که query مقدار نداشته باشد
+            "message": query.strip() if query else "No query provided"  
         }
         return JsonResponse(response, safe=False)
     except Exception as e:
